@@ -21,6 +21,9 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import { MainListItems, SecondaryListItems } from "./components";
 import Copyright from "../../components/ui/Copyright";
 
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate } from 'react-router-dom';
+
 const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
@@ -69,6 +72,8 @@ const Drawer = styled(MuiDrawer, {
 
 function DashboardContent() {
   const [open, setOpen] = React.useState(true);
+  const loginUserName = useSelector((state) => state.auth.loginUserName)
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -100,10 +105,10 @@ function DashboardContent() {
             noWrap
             sx={{ flexGrow: 1 }}
           >
-            {`Welcome, `}
+            {`Welcome, ${loginUserName}`}
           </Typography>
           <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
+            <Badge badgeContent={0} color="secondary">
               <NotificationsIcon />
             </Badge>
           </IconButton>
@@ -178,5 +183,9 @@ function DashboardContent() {
 }
 
 export default function Dashboard() {
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
+
+  if(!isAuthenticated) return <Navigate replace to='/'/>
+
   return <DashboardContent />;
 }

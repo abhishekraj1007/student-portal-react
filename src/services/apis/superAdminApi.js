@@ -4,7 +4,7 @@ import { BASE_API_URL } from "../../globalVariables";
 const signIN = async (signInDeatils) => {
   try {
     const response = await axios.post(
-      `${BASE_API_URL}/api/v1/super-admin/login`,
+      `${BASE_API_URL}/api/v1/super-admin/login/`,
       {
         username: signInDeatils.username,
         password: signInDeatils.password

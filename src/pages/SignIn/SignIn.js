@@ -15,12 +15,16 @@ import LoadingButton from "@mui/lab/LoadingButton";
 
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { authActions } from "../../store/slices/authSlice";
 
 import superAdminApi from "../../services/apis/superAdminApi";
 import Copyright from "../../components/ui/Copyright";
 
 export default function SignIn() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
@@ -33,11 +37,19 @@ export default function SignIn() {
       const userData = await superAdminApi.signIN(signInDeatils);
 
       if (userData.is_auth) {
+        dispatch(
+          authActions.updateLoginUser({
+            isAuthenticated: userData.is_auth,
+            userName: userData.username,
+            isSuperAdmin: userData.is_superadmin,
+          })
+        );
+        localStorage.setItem("access_token", `${userData.access_token}`);
+        
         setLoading(false);
         console.log(userData);
         toast.success("Logged In Successfully");
         navigate("/dashboard");
-        // localStorage.setItem("access_token", `${userData.access_token}`);
       }
 
       if (userData.error) {
