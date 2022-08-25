@@ -26,10 +26,8 @@ export default function SignIn() {
   const dispatch = useDispatch();
 
   const [loading, setLoading] = React.useState(false);
-
-  React.useEffect(() => {
-    console.log("Loading...", loading);
-  }, [loading]);
+  const [nameError, setNameError] = React.useState(false);
+  const [passwordError, setPasswordError] = React.useState(false);
 
   const getSignIn = async (signInDeatils) => {
     setLoading(true);
@@ -44,7 +42,14 @@ export default function SignIn() {
             isSuperAdmin: userData.is_superadmin,
           })
         );
-        localStorage.setItem("access_token", `${userData.access_token}`);
+        let obj = {
+          userName: userData.username,
+          access_token: userData.access_token,
+        }
+        localStorage.setItem(
+          "superAdmin",
+          JSON.stringify(obj)
+        );
         
         setLoading(false);
         console.log(userData);
@@ -60,7 +65,7 @@ export default function SignIn() {
       }
     } catch (error) {
       setLoading(false);
-      toast.error("Something Went Wrong");
+      toast.error(`${error.response.data.detail}`);
       console.log(error);
     }
   };
@@ -69,19 +74,29 @@ export default function SignIn() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log("data", data);
-    console.log({
-      userName: data.get("userName"),
-      password: data.get("password"),
-      remember: data.get("remember"),
-    });
-    let user = data.get("userName");
+    let username = data.get("userName");
+    let password = data.get("password");
+    console.log({ username, password });
+    if(!username) {
+      setNameError(true)
+    } else {
+      setNameError(false)
+    }
+    if(!password) {
+      setPasswordError(true)
+    } else {
+      setPasswordError(false)
+    }
 
-    let signInDeatils = {
-      username: data.get("userName"),
-      password: data.get("password"),
-    };
-    // calling Api
-    getSignIn(signInDeatils);
+    if(username && password) {
+      let signInDeatils = {
+        username,
+        password,
+      };
+      // calling Api
+      getSignIn(signInDeatils);
+
+    }
   };
 
   return (
@@ -110,6 +125,12 @@ export default function SignIn() {
             name="userName"
             autoComplete="userName"
             autoFocus
+            {...(nameError
+              ? {
+                  error: true,
+                  helperText: "Username is Required",
+                }
+              : null)}
           />
           <TextField
             margin="normal"
@@ -120,6 +141,12 @@ export default function SignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
+            {...(passwordError
+              ? {
+                  error: true,
+                  helperText: "Password is Required",
+                }
+              : null)}
           />
           <FormControlLabel
             control={

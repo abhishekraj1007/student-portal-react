@@ -6,6 +6,18 @@ import toast from "react-hot-toast";
 
 export default function CreateCollege() {
   const [loading, setLoading] = useState(false);
+  const EMAIL_REGEX = /\S+@\S+\.\S+/;
+
+  const [collegenameError, setCollegenameError] = useState(false);
+  const [usernameError, setUsernameError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [invalidEmail, setInvalidEmail] = useState(false);
+
+  const validateRegex = (value, regex) => {
+    const re = new RegExp(regex);
+    return re.test(value);
+  };
 
   const createColleges = async (collegeData) => {
     setLoading(true);
@@ -44,15 +56,49 @@ export default function CreateCollege() {
       password: data.get("password"),
     });
 
-    let collegeData = {
-      collegeName: data.get("collegeName"),
-      username: data.get("userName"),
-      email: data.get("email"),
-      password: data.get("password"),
-    };
+    let collegeName = data.get("collegeName");
+    let username = data.get("userName");
+    let email = data.get("email");
+    let password = data.get("password");
 
-    // calling Api
-    createColleges(collegeData);
+    if(!username) {
+      setUsernameError(true)
+    } else {
+      setUsernameError(false)
+    }
+    if(!password) {
+      setPasswordError(true)
+    } else {
+      setPasswordError(false)
+    }
+    if(!collegeName) {
+      setCollegenameError(true)
+    } else {
+      setCollegenameError(false)
+    }
+    if(!email) {
+      setEmailError(true)
+    } else {
+      setEmailError(false)
+    }
+
+    if (validateRegex(email, EMAIL_REGEX)) {
+      setInvalidEmail(false);
+    } else {
+      setInvalidEmail(true);
+    }
+
+    if(collegeName && username && email && password && !invalidEmail) {
+      let collegeData = {
+        collegeName,
+        username,
+        email,
+        password,
+      };
+      // calling Api
+      createColleges(collegeData);
+    }
+
   };
 
   return (
@@ -77,6 +123,12 @@ export default function CreateCollege() {
             label="College Name"
             name="collegeName"
             sx={{ mx: 2, my: 2 }}
+            {...(collegenameError
+              ? {
+                  error: true,
+                  helperText: "College Name is Required",
+                }
+              : null)}
           />
           <TextField
             margin="normal"
@@ -86,6 +138,12 @@ export default function CreateCollege() {
             name="userName"
             autoComplete="new-password"
             sx={{ mx: 2, my: 2 }}
+            {...(usernameError
+              ? {
+                  error: true,
+                  helperText: "Username is Required",
+                }
+              : null)}
           />
           <TextField
             margin="normal"
@@ -95,6 +153,18 @@ export default function CreateCollege() {
             name="email"
             type="email"
             sx={{ mx: 2, my: 2 }}
+            {...(emailError
+              ? {
+                  error: true,
+                  helperText: "Email is Required",
+                }
+              : null)}
+            {...(!emailError && invalidEmail
+              ? {
+                  error: true,
+                  helperText: "Invalid Email",
+                }
+              : null)}
           />
           <TextField
             margin="normal"
@@ -105,6 +175,12 @@ export default function CreateCollege() {
             id="password"
             autoComplete="new-password"
             sx={{ mx: 2, my: 2 }}
+            {...(passwordError
+              ? {
+                  error: true,
+                  helperText: "Password is Required",
+                }
+              : null)}
           />
           <Divider sx={{ mt: 1 }} />
           <Box

@@ -5,6 +5,7 @@ import MainLayout from './components/Layout/MainLayout';
 const SignIn = Loadable(lazy(() => import("./pages/SignIn/SignIn")));
 const Dashboard = Loadable(lazy(() => import("./pages/Dashboard/Dashboard")));
 const CreateCollege = Loadable(lazy(() => import("./pages/CreateCollege/CreateCollege")));
+const ViewColleges = Loadable(lazy(() => import("./pages/ViewColleges/ViewColleges")));
 
 const routes = [
   {
@@ -34,6 +35,19 @@ const routes = [
       {
         path: '',
         element: <CreateCollege />,
+      },
+    ],
+  },
+
+  {
+    path: '/colleges',
+    element: (
+      <MainLayout />
+    ),
+    children: [
+      {
+        path: '',
+        element: <ViewColleges />,
       },
     ],
   },

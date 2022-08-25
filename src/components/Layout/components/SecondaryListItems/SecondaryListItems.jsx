@@ -4,20 +4,34 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AddIcon from '@mui/icons-material/Add';
+import SchoolIcon from '@mui/icons-material/School';
 
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { authActions } from "../../../../store/slices/authSlice";
+import superAdminApi from "../../../../services/apis/superAdminApi";
+import toast from "react-hot-toast";
 
 export const SecondaryListItems = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    dispatch(authActions.logout());
-    localStorage.removeItem('access_token')
-    navigate("/")
+  const handleLogout = async () => {
+    try {
+      const data = await superAdminApi.logout();
+
+      if (data.message) {
+        console.log(data);
+        dispatch(authActions.logout());
+        localStorage.removeItem('superAdmin')
+        navigate("/")
+        toast.success(`${data.message}`);
+      }
+    } catch (error) {
+      toast.error("Something Went Wrong");
+      console.log(error);
+    }
   }
 
   return (
@@ -30,6 +44,12 @@ export const SecondaryListItems = () => {
           <AddIcon />
         </ListItemIcon>
         <ListItemText primary="Create College" />
+      </ListItemButton>
+      <ListItemButton onClick={() => navigate("/colleges")}>
+        <ListItemIcon>
+          <SchoolIcon />
+        </ListItemIcon>
+        <ListItemText primary="View Colleges" />
       </ListItemButton>
 
       <ListItemButton onClick={handleLogout}>
