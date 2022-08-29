@@ -11,9 +11,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from 'react-router-dom';
 
 export default function Dashboard() {
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  // const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
-  if (!isAuthenticated) return <Navigate replace to="/" />;
+  // if (!isAuthenticated) return <Navigate replace to="/" />;
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>

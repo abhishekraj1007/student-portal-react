@@ -14,15 +14,19 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import LoadingButton from "@mui/lab/LoadingButton";
 
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { authActions } from "../../store/slices/authSlice";
 
 import superAdminApi from "../../services/apis/superAdminApi";
+import collegeApi from "../../services/apis/collegeApi";
+import membersApi from "../../services/apis/membersApi";
+
 import Copyright from "../../components/ui/Copyright";
 
 export default function SignIn() {
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
 
   const [loading, setLoading] = React.useState(false);
@@ -32,7 +36,14 @@ export default function SignIn() {
   const getSignIn = async (signInDeatils) => {
     setLoading(true);
     try {
-      const userData = await superAdminApi.signIN(signInDeatils);
+      let userData = null;
+      if(location.pathname === "/dav") {
+        userData = await collegeApi.signIN(signInDeatils);
+      } else if(location.pathname === "/dav/member") {
+        userData = await membersApi.signIN(signInDeatils);
+      } else {
+        userData = await superAdminApi.signIN(signInDeatils);
+      }
 
       if (userData.is_auth) {
         dispatch(
@@ -40,17 +51,36 @@ export default function SignIn() {
             isAuthenticated: userData.is_auth,
             userName: userData.username,
             isSuperAdmin: userData.is_superadmin,
+            isCollege: userData.is_college,
+            userType: "",
           })
         );
-        let obj = {
-          userName: userData.username,
-          access_token: userData.access_token,
-        }
-        localStorage.setItem(
-          "superAdmin",
-          JSON.stringify(obj)
-        );
+        // let obj = {
+        //   userName: userData.username,
+        //   access_token: userData.access_token,
+        // }
+        // localStorage.setItem(
+        //   "superAdmin",
+        //   JSON.stringify(obj)
+        // );
         
+        setLoading(false);
+        console.log(userData);
+        toast.success("Logged In Successfully");
+        navigate("/dashboard");
+      }
+
+      if(userData.user_type) {
+        dispatch(
+          authActions.updateLoginUser({
+            isAuthenticated: userData.is_auth,
+            userName: userData.username,
+            isSuperAdmin: false,
+            isCollege: false,
+            userType: userData.user_type,
+          })
+        );
+
         setLoading(false);
         console.log(userData);
         toast.success("Logged In Successfully");
@@ -61,6 +91,13 @@ export default function SignIn() {
         setLoading(false);
         console.log(userData);
         toast.error("Username or Password does not match");
+        // localStorage.setItem("access_token", `${userData.access_token}`);
+      }
+
+      if (userData.message) {
+        setLoading(false);
+        console.log(userData);
+        toast.error(`${userData.message}`);
         // localStorage.setItem("access_token", `${userData.access_token}`);
       }
     } catch (error) {
