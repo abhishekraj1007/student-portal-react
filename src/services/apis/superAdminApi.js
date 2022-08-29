@@ -45,8 +45,8 @@ const createCollege = async (collegeData) => {
 
 const getColleges = async () => {
   try {
-    const response = await axios.get(
-      `${BASE_API_URL}/api/v1/colleges/`
+    const response = await axios.post(
+      `${BASE_API_URL}/api/v1/get-colleges/`
     );
 
     return response.data;

@@ -19,7 +19,7 @@ import superAdminApi from "../../../services/apis/superAdminApi";
 import toast from "react-hot-toast";
 
 
-const DeleteCollegeModal = ({ openDeleteModal, setDeleteModal, collegeID }) => {
+const DeleteCollegeModal = ({ openDeleteModal, setDeleteModal, collegeID, getAllColleges }) => {
   const [loading, setLoading] = useState(false);
 
   const handleDelete =  async () => {
@@ -32,6 +32,7 @@ const DeleteCollegeModal = ({ openDeleteModal, setDeleteModal, collegeID }) => {
         console.log(data);
         toast.success(`${data.msg}`);
         setDeleteModal(false);
+        getAllColleges();
       }
 
     } catch (error) {
@@ -69,7 +70,7 @@ const DeleteCollegeModal = ({ openDeleteModal, setDeleteModal, collegeID }) => {
 
           <LoadingButton
             variant="text"
-            color="warning"
+            color="error"
             loading={loading}
             onClick={handleDelete}
             // sx={{ mt: 3, mb: 2 }}

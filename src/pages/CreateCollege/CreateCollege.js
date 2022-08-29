@@ -11,7 +11,7 @@ export default function CreateCollege() {
   const [collegenameError, setCollegenameError] = useState(false);
   const [usernameError, setUsernameError] = useState(false);
   const [emailError, setEmailError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
+  // const [passwordError, setPasswordError] = useState(false);
   const [invalidEmail, setInvalidEmail] = useState(false);
 
   const validateRegex = (value, regex) => {
@@ -53,24 +53,24 @@ export default function CreateCollege() {
       collegeName: data.get("collegeName"),
       userName: data.get("userName"),
       email: data.get("email"),
-      password: data.get("password"),
+      // password: data.get("password"),
     });
 
     let collegeName = data.get("collegeName");
     let username = data.get("userName");
     let email = data.get("email");
-    let password = data.get("password");
+    // let password = data.get("password");
 
     if(!username) {
       setUsernameError(true)
     } else {
       setUsernameError(false)
     }
-    if(!password) {
-      setPasswordError(true)
-    } else {
-      setPasswordError(false)
-    }
+    // if(!password) {
+    //   setPasswordError(true)
+    // } else {
+    //   setPasswordError(false)
+    // }
     if(!collegeName) {
       setCollegenameError(true)
     } else {
@@ -88,12 +88,12 @@ export default function CreateCollege() {
       setInvalidEmail(true);
     }
 
-    if(collegeName && username && email && password && !invalidEmail) {
+    if(collegeName && username && email && !invalidEmail) {
       let collegeData = {
         collegeName,
         username,
         email,
-        password,
+        // password,
       };
       // calling Api
       createColleges(collegeData);
@@ -166,7 +166,7 @@ export default function CreateCollege() {
                 }
               : null)}
           />
-          <TextField
+          {/* <TextField
             margin="normal"
             required
             name="password"
@@ -181,7 +181,7 @@ export default function CreateCollege() {
                   helperText: "Password is Required",
                 }
               : null)}
-          />
+          /> */}
           <Divider sx={{ mt: 1 }} />
           <Box
             sx={{

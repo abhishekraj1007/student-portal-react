@@ -28,7 +28,7 @@ export default function ViewColleges() {
       if (data) {
         setLoading(false);
         console.log(data);
-        // setColleges(data);
+        setColleges(data);
         // navigate("/dashboard");
       }
     } catch (error) {
@@ -114,6 +114,7 @@ export default function ViewColleges() {
           openDeleteModal={openDeleteModal}
           setDeleteModal={setDeleteModal}
           collegeID={collegeID}
+          getAllColleges={getAllColleges}
         />
       )}
     </>
