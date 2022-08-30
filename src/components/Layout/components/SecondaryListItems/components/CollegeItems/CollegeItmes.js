@@ -24,7 +24,7 @@ export const CollegeItems = () => {
       if (data.message) {
         console.log(data);
         dispatch(authActions.logout());
-        // localStorage.removeItem('superAdmin')
+        localStorage.removeItem('collegeAdmin')
         navigate("/dav")
         toast.success(`${data.message}`);
       }
@@ -39,13 +39,13 @@ export const CollegeItems = () => {
       {/* <ListSubheader component="div" inset>
           User
         </ListSubheader> */}
-      {/* <ListItemButton onClick={() => navigate("/create-college")}>
+      <ListItemButton onClick={() => navigate("/register-member")}>
         <ListItemIcon>
           <AddIcon />
         </ListItemIcon>
-        <ListItemText primary="Create College" />
+        <ListItemText primary="Register Member" />
       </ListItemButton>
-      <ListItemButton onClick={() => navigate("/colleges")}>
+      {/* <ListItemButton onClick={() => navigate("/colleges")}>
         <ListItemIcon>
           <SchoolIcon />
         </ListItemIcon>

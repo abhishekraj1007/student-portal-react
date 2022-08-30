@@ -55,14 +55,22 @@ export default function SignIn() {
             userType: "",
           })
         );
-        // let obj = {
-        //   userName: userData.username,
-        //   access_token: userData.access_token,
-        // }
-        // localStorage.setItem(
-        //   "superAdmin",
-        //   JSON.stringify(obj)
-        // );
+        let obj = {
+          userName: userData.username,
+          access_token: userData.access_token,
+        }
+        if(userData.is_superadmin) {
+          localStorage.setItem(
+            "superAdmin",
+            JSON.stringify(obj)
+          );
+        }
+        if(userData.is_college) {
+          localStorage.setItem(
+            "collegeAdmin",
+            JSON.stringify(obj)
+          );
+        }
         
         setLoading(false);
         console.log(userData);

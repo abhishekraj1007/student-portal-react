@@ -9,6 +9,7 @@ const MemberSignIn = Loadable(lazy(() => import("./pages/SignIn/SignIn")));
 const Dashboard = Loadable(lazy(() => import("./pages/Dashboard/Dashboard")));
 const CreateCollege = Loadable(lazy(() => import("./pages/CreateCollege/CreateCollege")));
 const ViewColleges = Loadable(lazy(() => import("./pages/ViewColleges/ViewColleges")));
+const RegisterMember = Loadable(lazy(() => import("./pages/RegisterMember/RegisterMember")));
 
 const routes = [
   {
@@ -61,6 +62,19 @@ const routes = [
       {
         path: '',
         element: <ViewColleges />,
+      },
+    ],
+  },
+
+  {
+    path: '/register-member',
+    element: (
+      <MainLayout />
+    ),
+    children: [
+      {
+        path: '',
+        element: <RegisterMember />,
       },
     ],
   },
