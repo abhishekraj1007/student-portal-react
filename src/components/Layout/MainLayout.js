@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 // import { styled } from '@mui/material/styles';
 // import DashboardNavbar from './navigation/';
 // import Sidebar from './navigation/Sidebar';
@@ -16,6 +16,7 @@ import {
   Divider,
   IconButton,
   Badge,
+  Avatar,
 } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
@@ -77,6 +78,7 @@ const Drawer = styled(MuiDrawer, {
 
 const MainLayout = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 //   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const layoutContentRef = useRef(null);
 
@@ -130,6 +132,9 @@ const MainLayout = () => {
             <Badge badgeContent={0} color="secondary">
               <NotificationsIcon />
             </Badge>
+          </IconButton>
+          <IconButton color="inherit" onClick={() => navigate("/account")}>
+            <Avatar src="/broken-image.jpg" sx={{ width: 30, height: 30 }}/>
           </IconButton>
         </Toolbar>
       </AppBar>

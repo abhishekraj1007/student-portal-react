@@ -10,6 +10,7 @@ const Dashboard = Loadable(lazy(() => import("./pages/Dashboard/Dashboard")));
 const CreateCollege = Loadable(lazy(() => import("./pages/CreateCollege/CreateCollege")));
 const ViewColleges = Loadable(lazy(() => import("./pages/ViewColleges/ViewColleges")));
 const RegisterMember = Loadable(lazy(() => import("./pages/RegisterMember/RegisterMember")));
+const Account = Loadable(lazy(() => import("./pages/Account/Account")))
 
 const routes = [
   {
@@ -25,6 +26,19 @@ const routes = [
   {
     path: "/dav/member",
     element: <MemberSignIn />,
+  },
+
+  {
+    path: '/account',
+    element: (
+      <MainLayout />
+    ),
+    children: [
+      {
+        path: '',
+        element: <Account />,
+      },
+    ],
   },
 
   {
