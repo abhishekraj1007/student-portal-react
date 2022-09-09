@@ -50,8 +50,9 @@ export default function SignIn() {
           authActions.updateLoginUser({
             isAuthenticated: userData.is_auth,
             userName: userData.username,
-            isSuperAdmin: userData.is_superadmin,
+            isSuperAdmin: userData.is_superadmin ? userData.is_superadmin : "",
             isCollege: userData.is_college,
+            isStudent: userData.is_student,
             userType: "",
           })
         );
@@ -59,41 +60,41 @@ export default function SignIn() {
           userName: userData.username,
           access_token: userData.access_token,
         }
-        if(userData.is_superadmin) {
+        if(userData.is_student) {
           localStorage.setItem(
-            "superAdmin",
+            "member",
             JSON.stringify(obj)
           );
         }
-        if(userData.is_college) {
+        if(userData.is_superadmin) {
           localStorage.setItem(
-            "collegeAdmin",
+            "admin",
             JSON.stringify(obj)
           );
         }
         
         setLoading(false);
         console.log(userData);
-        toast.success("Logged In Successfully");
+        // toast.success("Logged In Successfully");
         navigate("/dashboard");
       }
 
-      if(userData.user_type) {
-        dispatch(
-          authActions.updateLoginUser({
-            isAuthenticated: userData.is_auth,
-            userName: userData.username,
-            isSuperAdmin: false,
-            isCollege: false,
-            userType: userData.user_type,
-          })
-        );
+      // if(userData.user_type) {
+      //   dispatch(
+      //     authActions.updateLoginUser({
+      //       isAuthenticated: userData.is_auth,
+      //       userName: userData.username,
+      //       isSuperAdmin: false,
+      //       isCollege: false,
+      //       userType: userData.user_type,
+      //     })
+      //   );
 
-        setLoading(false);
-        console.log(userData);
-        toast.success("Logged In Successfully");
-        navigate("/dashboard");
-      }
+      //   setLoading(false);
+      //   console.log(userData);
+      //   toast.success("Logged In Successfully");
+      //   navigate("/dashboard");
+      // }
 
       if (userData.error) {
         setLoading(false);

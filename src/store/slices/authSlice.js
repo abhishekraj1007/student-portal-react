@@ -5,6 +5,7 @@ const initialState = {
   loginUserName: "",
   isSuperAdmin: false,
   isCollege: false,
+  isStudent: false,
   userType: "",
 };
 
@@ -13,11 +14,12 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     updateLoginUser(state, action) {
-      const { isAuthenticated, userName, isSuperAdmin, isCollege, userType } = action.payload;
+      const { isAuthenticated, userName, isSuperAdmin, isCollege, isStudent, userType } = action.payload;
       state.isAuthenticated = isAuthenticated;
       state.loginUserName = userName;
       state.isSuperAdmin = isSuperAdmin;
       state.isCollege = isCollege;
+      state.isStudent = isStudent;
       state.userType = userType;
     },
     logout(state) {
@@ -25,6 +27,7 @@ const authSlice = createSlice({
       state.loginUserName = "";
       state.isSuperAdmin = false;
       state.isCollege = false;
+      state.isStudent = false;
       state.userType = "";
     },
   },

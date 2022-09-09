@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { BASE_API_URL } from "../../globalVariables";
 // import { styled } from '@mui/material/styles';
 // import DashboardNavbar from './navigation/';
 // import Sidebar from './navigation/Sidebar';
@@ -28,6 +29,9 @@ import { MainListItems, SecondaryListItems } from "./components";
 // import Copyright from "../../components/ui/Copyright";
 
 import { useDispatch, useSelector } from "react-redux";
+import membersApi from '../../services/apis/membersApi';
+import toast from 'react-hot-toast';
+import { accountActions } from '../../pages/Account/store/slice/accountSlice';
 // import { Navigate } from 'react-router-dom';
 
 const drawerWidth = 240;
@@ -79,11 +83,23 @@ const Drawer = styled(MuiDrawer, {
 const MainLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 //   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const layoutContentRef = useRef(null);
 
   const [open, setOpen] = React.useState(true);
-  const loginUserName = useSelector((state) => state.auth.loginUserName)
+  // const loginUserName = useSelector((state) => state.auth.loginUserName)
+  const isSuperAdmin = useSelector((state) => state.auth.isSuperAdmin);
+  const profilePic = useSelector((state) => state.account.studentProfileData.profile)
+  let loginUserName = "";
+
+  if(!isSuperAdmin) {
+    let obj = JSON.parse(localStorage.getItem("member"));
+    loginUserName = obj?.userName;
+  } else {
+    let obj = JSON.parse(localStorage.getItem("admin"));
+    loginUserName = obj?.userName;
+  }
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -94,6 +110,31 @@ const MainLayout = () => {
       layoutContentRef.current.scrollTop = 0;
     }
   }, [location.pathname]);
+
+  const getStudentProfile = async () => {
+    try {
+      const data = await membersApi.studentProfile();
+
+      if (data) {
+        console.log(data);
+        dispatch(accountActions.updateStudentProfileData(data));
+      }
+
+    } catch (error) {
+      toast.error("Something Went Wrong");
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if(!isSuperAdmin) {
+      getStudentProfile();
+    }
+  }, [isSuperAdmin]);
+
+  useEffect(()=> {
+    console.log("profilePic", profilePic);
+  }, [profilePic])
 
 //   const toggleSideBarHandler = () => {
 //     setIsSidebarOpen((prepValue) => !prepValue);
@@ -134,7 +175,7 @@ const MainLayout = () => {
             </Badge>
           </IconButton>
           <IconButton color="inherit" onClick={() => navigate("/account")}>
-            <Avatar src="/broken-image.jpg" sx={{ width: 30, height: 30 }}/>
+            <Avatar src={!isSuperAdmin ? `${BASE_API_URL}${profilePic}`: "" } sx={{ width: 30, height: 30 }}/>
           </IconButton>
         </Toolbar>
       </AppBar>
