@@ -10,7 +10,9 @@ const Dashboard = Loadable(lazy(() => import("./pages/Dashboard/Dashboard")));
 const CreateCollege = Loadable(lazy(() => import("./pages/CreateCollege/CreateCollege")));
 const ViewColleges = Loadable(lazy(() => import("./pages/ViewColleges/ViewColleges")));
 const RegisterMember = Loadable(lazy(() => import("./pages/RegisterMember/RegisterMember")));
-const Account = Loadable(lazy(() => import("./pages/Account/Account")))
+const Account = Loadable(lazy(() => import("./pages/Account/Account")));
+const Courses = Loadable(lazy(() => import("./pages/Courses/Courses")));
+
 
 const routes = [
   {
@@ -89,6 +91,19 @@ const routes = [
       {
         path: '',
         element: <RegisterMember />,
+      },
+    ],
+  },
+
+  {
+    path: '/courses',
+    element: (
+      <MainLayout />
+    ),
+    children: [
+      {
+        path: '',
+        element: <Courses />,
       },
     ],
   },

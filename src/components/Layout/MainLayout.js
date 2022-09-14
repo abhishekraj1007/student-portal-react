@@ -132,10 +132,6 @@ const MainLayout = () => {
     }
   }, [isSuperAdmin]);
 
-  useEffect(()=> {
-    console.log("profilePic", profilePic);
-  }, [profilePic])
-
 //   const toggleSideBarHandler = () => {
 //     setIsSidebarOpen((prepValue) => !prepValue);
 //   };

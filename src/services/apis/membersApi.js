@@ -23,7 +23,7 @@ const signIN = async (signInDeatils) => {
 
 const studentProfile = async () => {
   let token = JSON.parse(localStorage.getItem("member"));
-  console.log("Member Token", 'Bearer ' + token.access_token);
+  // console.log("Member Token", 'Bearer ' + token.access_token);
   try {
     const response = await axios.post(
       `${BASE_API_URL}/college/iit/api/v1/student-profile/`,
@@ -43,25 +43,31 @@ const studentProfile = async () => {
     }
   }
 
+  return {};
+};
+
+const studentCourses = async () => {
+  let token = JSON.parse(localStorage.getItem("member"));
+  // console.log("Member Token", 'Bearer ' + token.access_token);
   try {
-    const response = await fetch(
-      `${BASE_API_URL}/college/iit/api/v1/student-profile/`,
+    const response = await axios.post(
+      `${BASE_API_URL}/college/iit/api/v1/student-course/`,
+      {},
       {
-        method: "POST",
-        // mode: "cors",
         headers: {
-          "Content-Type": "application/json",
-          "Authorization":  `Bearer ${token.access_token}`
+          Authorization: `Bearer ${token.access_token}`
         }
       }
     );
 
-    console.log("response...", response);
-
-    return response.json();
-  } catch (error) {
-    console.log(error);
+    return response.data;
+  } catch (e) {
+    console.log("error", e);
+    if (!axios.isCancel(e)) {
+      throw e;
+    }
   }
+  
   return {};
 };
 
@@ -85,6 +91,7 @@ const membersApi = {
   signIN,
   logout,
   studentProfile,
+  studentCourses,
 };
 
 export default membersApi;
