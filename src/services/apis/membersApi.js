@@ -1,10 +1,10 @@
 import axios from "axios";
 import { BASE_API_URL } from "../../globalVariables";
 // /api/v1/member/login/
-const signIN = async (signInDeatils) => {
+const signIN = async (signInDeatils, college) => {
   try {
     const response = await axios.post(
-      `${BASE_API_URL}/college/iit/api/v1/college/login/`,
+      `${BASE_API_URL}/college/${college}/api/v1/college/login/`,
       {
         username: signInDeatils.username,
         password: signInDeatils.password
@@ -21,12 +21,12 @@ const signIN = async (signInDeatils) => {
   return {};
 };
 
-const studentProfile = async () => {
+const studentProfile = async (college) => {
   let token = JSON.parse(localStorage.getItem("member"));
   // console.log("Member Token", 'Bearer ' + token.access_token);
   try {
     const response = await axios.post(
-      `${BASE_API_URL}/college/iit/api/v1/student-profile/`,
+      `${BASE_API_URL}/college/${college}/api/v1/student-profile/`,
       {},
       {
         headers: {
@@ -46,12 +46,12 @@ const studentProfile = async () => {
   return {};
 };
 
-const studentCourses = async () => {
+const studentCourses = async (college) => {
   let token = JSON.parse(localStorage.getItem("member"));
   // console.log("Member Token", 'Bearer ' + token.access_token);
   try {
     const response = await axios.post(
-      `${BASE_API_URL}/college/iit/api/v1/student-course/`,
+      `${BASE_API_URL}/college/${college}/api/v1/student-course/`,
       {},
       {
         headers: {
@@ -68,6 +68,25 @@ const studentCourses = async () => {
     }
   }
   
+  return {};
+};
+
+const getCollegeLogo = async (collegeName) => {
+  try {
+    const response = await axios.post(
+      `${BASE_API_URL}/api/v1/college-logo/`,
+      {
+        name: collegeName
+      }
+    );
+
+    return response.data;
+  } catch (e) {
+    console.log("error", e);
+    if (!axios.isCancel(e)) {
+      throw e;
+    }
+  }
   return {};
 };
 
@@ -92,6 +111,7 @@ const membersApi = {
   logout,
   studentProfile,
   studentCourses,
+  getCollegeLogo,
 };
 
 export default membersApi;

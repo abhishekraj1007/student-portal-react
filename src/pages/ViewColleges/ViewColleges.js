@@ -23,12 +23,12 @@ export default function ViewColleges() {
   const getAllColleges = async () => {
     setLoading(true);
     try {
-      const data = await superAdminApi.getColleges();
+      const response = await superAdminApi.getColleges();
 
-      if (data) {
+      if (response.data) {
         setLoading(false);
-        console.log(data);
-        setColleges(data);
+        console.log(response.data);
+        setColleges(response.data);
         // navigate("/dashboard");
       }
     } catch (error) {

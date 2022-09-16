@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { BASE_API_URL } from "../../globalVariables";
 // import { styled } from '@mui/material/styles';
 // import DashboardNavbar from './navigation/';
@@ -83,6 +83,7 @@ const Drawer = styled(MuiDrawer, {
 const MainLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  // const { college } = useParams();
   const dispatch = useDispatch();
 //   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const layoutContentRef = useRef(null);
@@ -111,26 +112,26 @@ const MainLayout = () => {
     }
   }, [location.pathname]);
 
-  const getStudentProfile = async () => {
-    try {
-      const data = await membersApi.studentProfile();
+  // const getStudentProfile = async () => {
+  //   try {
+  //     const data = await membersApi.studentProfile(college);
 
-      if (data) {
-        console.log(data);
-        dispatch(accountActions.updateStudentProfileData(data));
-      }
+  //     if (data) {
+  //       console.log(data);
+  //       dispatch(accountActions.updateStudentProfileData(data));
+  //     }
 
-    } catch (error) {
-      toast.error("Something Went Wrong");
-      console.log(error);
-    }
-  };
+  //   } catch (error) {
+  //     toast.error("Something Went Wrong");
+  //     console.log(error);
+  //   }
+  // };
 
-  useEffect(() => {
-    if(!isSuperAdmin) {
-      getStudentProfile();
-    }
-  }, [isSuperAdmin]);
+  // useEffect(() => {
+  //   if(!isSuperAdmin) {
+  //     getStudentProfile();
+  //   }
+  // }, [isSuperAdmin]);
 
 //   const toggleSideBarHandler = () => {
 //     setIsSidebarOpen((prepValue) => !prepValue);
@@ -170,7 +171,7 @@ const MainLayout = () => {
               <NotificationsIcon />
             </Badge>
           </IconButton>
-          <IconButton color="inherit" onClick={() => navigate("/account")}>
+          <IconButton color="inherit" onClick={() => navigate("account")}>
             <Avatar src={!isSuperAdmin ? `${BASE_API_URL}${profilePic}`: "" } sx={{ width: 30, height: 30 }}/>
           </IconButton>
         </Toolbar>

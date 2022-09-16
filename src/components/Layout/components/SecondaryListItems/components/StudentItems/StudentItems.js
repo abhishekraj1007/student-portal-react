@@ -40,7 +40,7 @@ export const StudentItems = () => {
       {/* <ListSubheader component="div" inset>
           User
         </ListSubheader> */}
-      <ListItemButton onClick={() => navigate("/courses")}>
+      <ListItemButton onClick={() => navigate("courses")}>
         <ListItemIcon>
           <CollectionsBookmarkIcon />
         </ListItemIcon>
