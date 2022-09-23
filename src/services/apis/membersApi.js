@@ -71,6 +71,62 @@ const studentCourses = async (college) => {
   return {};
 };
 
+const studentExamForm = async (college, formData) => {
+  let token = JSON.parse(localStorage.getItem("member"));
+  // console.log("Member Token", 'Bearer ' + token.access_token);
+  try {
+    const response = await axios.post(
+      `${BASE_API_URL}/college/${college}/api/v1/student-exam/`,
+      {
+        exam_type: formData.examType,
+        exam_session: formData.examSession,
+        fee_paid_amount: formData.feeAmount,
+        fee_reciept_ref_no: formData.feeRecieptNo
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token.access_token}`
+        }
+      }
+    );
+
+    return response.data;
+  } catch (e) {
+    console.log("error", e);
+    if (!axios.isCancel(e)) {
+      throw e;
+    }
+  }
+  
+  return {};
+};
+
+const studentExamFormData = async (college) => {
+  let token = JSON.parse(localStorage.getItem("member"));
+  // console.log("Member Token", 'Bearer ' + token.access_token);
+  try {
+    const response = await axios.post(
+      `${BASE_API_URL}/college/${college}/api/v1/student-exam-submitted/`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token.access_token}`
+        }
+      }
+    );
+
+    return response.data;
+  } catch (e) {
+    console.log("error", e);
+    if (!axios.isCancel(e)) {
+      throw e;
+    }
+  }
+  
+  return {};
+};
+
+
 const getCollegeLogo = async (collegeName) => {
   try {
     const response = await axios.post(
@@ -112,6 +168,8 @@ const membersApi = {
   studentProfile,
   studentCourses,
   getCollegeLogo,
+  studentExamForm,
+  studentExamFormData,
 };
 
 export default membersApi;

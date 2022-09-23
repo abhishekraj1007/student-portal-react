@@ -12,7 +12,7 @@ const ViewColleges = Loadable(lazy(() => import("./pages/ViewColleges/ViewColleg
 const RegisterMember = Loadable(lazy(() => import("./pages/RegisterMember/RegisterMember")));
 const StudentAccount = Loadable(lazy(() => import("./pages/Account/Account")));
 const StudentCourses = Loadable(lazy(() => import("./pages/Courses/Courses")));
-
+const StudentExamForm = Loadable(lazy(() => import("./pages/Exams/Exams")));
 
 const routes = [
   {
@@ -68,6 +68,10 @@ const routes = [
       {
         path: 'courses',
         element: <StudentCourses />,
+      },
+      {
+        path: 'exam-form',
+        element: <StudentExamForm />,
       },
     ]
   },

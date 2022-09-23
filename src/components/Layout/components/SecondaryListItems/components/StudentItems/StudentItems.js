@@ -6,6 +6,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import AddIcon from '@mui/icons-material/Add';
 import SchoolIcon from '@mui/icons-material/School';
 import CollectionsBookmarkIcon from '@mui/icons-material/CollectionsBookmark';
+import ImportContactsIcon from '@mui/icons-material/ImportContacts';
 
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -45,6 +46,12 @@ export const StudentItems = () => {
           <CollectionsBookmarkIcon />
         </ListItemIcon>
         <ListItemText primary="Courses" />
+      </ListItemButton>
+      <ListItemButton onClick={() => navigate("exam-form")}>
+        <ListItemIcon>
+          <ImportContactsIcon />
+        </ListItemIcon>
+        <ListItemText primary="Exams" />
       </ListItemButton>
       {/* <ListItemButton onClick={() => navigate("/colleges")}>
         <ListItemIcon>

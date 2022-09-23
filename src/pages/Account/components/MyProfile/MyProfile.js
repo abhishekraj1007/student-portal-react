@@ -55,6 +55,15 @@ export default function MyProfile() {
                 </Box>
                 <Box component="span">{profileData?.department_id?.department_name}</Box>
               </Box>
+              <Box>
+                <Box
+                  component="span"
+                  sx={{ fontSize: "0.9rem", fontWeight: "600" }}
+                >
+                  {`Semester Code: `}
+                </Box>
+                <Box component="span">{profileData?.semester?.semester_code}</Box>
+              </Box>
             </Stack>
           </Card>
         </Grid>
