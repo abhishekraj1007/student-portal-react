@@ -21,12 +21,12 @@ export const SuperAdminItems = () => {
     try {
       const data = await superAdminApi.logout();
 
-      if (data.message) {
+      if (data.msg) {
         console.log(data);
         dispatch(authActions.logout());
         localStorage.removeItem('auth')
         navigate("/login")
-        toast.success(`${data.message}`);
+        toast.success(`${data.msg}`);
       }
     } catch (error) {
       toast.error("Something Went Wrong");
