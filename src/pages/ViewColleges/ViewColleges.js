@@ -5,16 +5,20 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Box, Card, IconButton, Paper, Typography } from "@mui/material";
+import { Box, Card, IconButton, Paper, Typography, Link } from "@mui/material";
+import Breadcrumbs from '@mui/material/Breadcrumbs';
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useState, useEffect } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import superAdminApi from "../../services/apis/superAdminApi";
 import TableSkeletonLoading from "../../components/ui/TableSkeletonLoading";
 import DeleteCollegeModal from "./DeleteCollegeModal/DeleteCollegeModal";
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import toast from "react-hot-toast";
+import { BASE_API_URL } from "../../globalVariables";
 
 export default function ViewColleges() {
+  const navigate = useNavigate();
   const [openDeleteModal, setDeleteModal] = useState(false);
   const [collegeID, setCollegeID] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -48,7 +52,11 @@ export default function ViewColleges() {
     setCollegeID(id);
   };
 
-  let tableRowsContent = <TableSkeletonLoading rowPerPage={10} />;
+  const onViewHandler = (schema_name) => {
+    navigate(`/colleges/${schema_name}`);
+  };
+
+  let tableRowsContent = <TableSkeletonLoading rowPerPage={10} colPerPage={9} />;
 
   if (!loading) {
     if (colleges.length === 0) {
@@ -63,7 +71,7 @@ export default function ViewColleges() {
       tableRowsContent = (
         <>
           {colleges?.map((data, index) => {
-            let { id, name } = data;
+            let { id, name, image, email, username, schema_name, created_on, year_of_establishment, } = data;
             return (
               <TableRow
                 key={`${id}_${index}`}
@@ -77,9 +85,29 @@ export default function ViewColleges() {
                   >
                     <DeleteIcon />
                   </IconButton>
+                  <IconButton
+                    size="small"
+                    onClick={() => onViewHandler(schema_name)}
+                    color="primary"
+                  >
+                    <VisibilityIcon />
+                  </IconButton>
                 </TableCell>
                 <TableCell>{id}</TableCell>
+                <TableCell>{year_of_establishment}</TableCell>
                 <TableCell>{name}</TableCell>
+                <TableCell>{schema_name}</TableCell>
+                <TableCell>{username}</TableCell>
+                <TableCell>{email}</TableCell>
+                <TableCell>{created_on}</TableCell>
+                <TableCell>
+                  <img
+                    src={`${BASE_API_URL}/college/public${image}`}
+                    height="40px"
+                    width="40px"
+                    alt="College Logo"
+                  />
+                </TableCell>
               </TableRow>
             );
           })}
@@ -91,6 +119,21 @@ export default function ViewColleges() {
   return (
     <>
       <Box sx={{ m: 2 }}>
+        <Box sx={{ mb: 2 }}>
+          <Breadcrumbs>
+            <Link underline="hover" color="inherit" href="/colleges">
+              Colleges
+            </Link>
+            {/* <Link
+              underline="hover"
+              color="inherit"
+              href="/material-ui/getting-started/installation/"
+            >
+              Core
+            </Link> */}
+            {/* <Typography color="text.primary">Breadcrumbs</Typography> */}
+          </Breadcrumbs>
+        </Box>
         <Card sx={{ p: 2 }}>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -98,12 +141,16 @@ export default function ViewColleges() {
                 <TableRow>
                   <TableCell>Action</TableCell>
                   <TableCell>ID</TableCell>
+                  <TableCell>Est.</TableCell>
                   <TableCell>College Name</TableCell>
+                  <TableCell>Schema Name</TableCell>
+                  <TableCell>User Name</TableCell>
+                  <TableCell>Email</TableCell>
+                  <TableCell>Created On</TableCell>
+                  <TableCell>Logo</TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody>
-                {tableRowsContent}
-              </TableBody>
+              <TableBody>{tableRowsContent}</TableBody>
             </Table>
           </TableContainer>
         </Card>

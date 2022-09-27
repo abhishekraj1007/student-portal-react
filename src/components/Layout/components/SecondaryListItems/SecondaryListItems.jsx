@@ -1,23 +1,34 @@
-import * as React from "react";
-import { CollegeItems, SuperAdminItems, MemberItems, StudentItems } from "./components";
+import { SuperAdminItems, StudentItems } from "./components";
 import { useSelector } from "react-redux";
+import { useEffect, Fragment, useState } from "react";
 
 export const SecondaryListItems = () => {
-  const superAdmin = useSelector((state) => state.auth.isSuperAdmin);
-  const collegeAdmin = useSelector((state) => state.auth.isCollege);
-  const member = useSelector((state) => state.auth.userType);
-  const student = useSelector((state) => state.auth.isStudent);
+  const [superAdmin, setSuperAdmin] = useState(null);
+  const [student, setStudent] = useState(null);
+  // const superAdmin = useSelector((state) => state.auth.isSuperAdmin);
+  // const collegeAdmin = useSelector((state) => state.auth.isCollege);
+  // const member = useSelector((state) => state.auth.userType);
+  // const student = useSelector((state) => state.auth.isStudent);
+  useEffect(() => {
+    let obj = JSON.parse(localStorage.getItem("auth"));
+    if(obj?.isSuperAdmin) {
+      setSuperAdmin(true);
+    }
+    if(obj?.isStudent) {
+      setStudent(true);
+    }
+  }, [])
 
   return (
-    <React.Fragment>
+    <Fragment>
       {superAdmin && <SuperAdminItems />}
 
-      {collegeAdmin && <CollegeItems />}
+      {/* {collegeAdmin && <CollegeItems />}
 
-      {member && <MemberItems />}
+      {member && <MemberItems />} */}
 
       {student && <StudentItems />}
-    </React.Fragment>
+    </Fragment>
   );
 };
 

@@ -26,7 +26,7 @@ export const StudentItems = () => {
       if (data.message) {
         console.log(data);
         dispatch(authActions.logout());
-        localStorage.removeItem('collegeAdmin')
+        localStorage.removeItem('auth')
         navigate("/dav")
         toast.success(`${data.message}`);
       }

@@ -27,9 +27,11 @@ const createCollege = async (collegeData) => {
       `${BASE_API_URL}/api/v1/colleges/`,
       {
         college_name: collegeData.collegeName,
-        username: collegeData.username,
+        username: collegeData.userName,
         email: collegeData.email,
-        password: collegeData.password,
+        college_path: collegeData.collegePath,
+        year_of_establishment: collegeData.yearOFEst,
+        image: collegeData.image
       }
     );
 
@@ -62,6 +64,33 @@ const getColleges = async () => {
     // console.log("response...", response)
 
     // return response.json();
+  } catch (e) {
+    console.log("error", e);
+    if (!axios.isCancel(e)) {
+      throw e;
+    }
+  }
+  return {};
+};
+
+const getCollegeMembers = async ({ college_name }) => {
+  let token = JSON.parse(localStorage.getItem("auth"));
+  // console.log("admin get member token", token);
+  // console.log("get member college_name", college_name);
+  try {
+    const response = await axios.post(
+      `${BASE_API_URL}/api/v1/college/members/`,
+      {
+        college_name
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token.access_token}`
+        }
+      }
+    );
+
+    return response.data;
   } catch (e) {
     console.log("error", e);
     if (!axios.isCancel(e)) {
@@ -109,6 +138,7 @@ const superAdminApi = {
   getColleges,
   deleteColleges,
   logout,
+  getCollegeMembers,
 };
 
 export default superAdminApi;

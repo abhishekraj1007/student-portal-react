@@ -6,8 +6,6 @@ import { BASE_API_URL } from "../../globalVariables";
 // import Sidebar from './navigation/Sidebar';
 // import Navbar from './navigation/NavBar';
 // import LegalBar from './LegalBar';
-
-import * as React from "react";
 import { styled } from "@mui/material/styles";
 import {
   Box,
@@ -83,24 +81,50 @@ const Drawer = styled(MuiDrawer, {
 const MainLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  // const { college } = useParams();
+  const { college } = useParams();
   const dispatch = useDispatch();
 //   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const layoutContentRef = useRef(null);
 
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = useState(true);
+  const [loginUserName, setLoginUserName] = useState("");
   // const loginUserName = useSelector((state) => state.auth.loginUserName)
-  const isSuperAdmin = useSelector((state) => state.auth.isSuperAdmin);
-  const profilePic = useSelector((state) => state.account.studentProfileData.profile)
-  let loginUserName = "";
+  // const isSuperAdmin = useSelector((state) => state.auth.isSuperAdmin);
+  const profileData = useSelector((state) => state.account.studentProfileData.studentID)
+  const profilePic = useSelector((state) => state.account?.studentProfileData?.profile);
 
-  if(!isSuperAdmin) {
-    let obj = JSON.parse(localStorage.getItem("member"));
-    loginUserName = obj?.userName;
-  } else {
-    let obj = JSON.parse(localStorage.getItem("admin"));
-    loginUserName = obj?.userName;
+  useEffect(() => {
+    let obj = JSON.parse(localStorage.getItem("auth"));
+    setLoginUserName(obj?.userName);
+    console.log("profile data", profileData)
+    if(!profileData && obj?.isStudent) {
+      console.log("Call the student profile")
+      getStudentProfileData();
+    }
+  }, []);
+
+  const getStudentProfileData = async () => {
+    try {
+      const data = await membersApi.studentProfile(college);
+
+      if (data) {
+        console.log(data);
+        dispatch(accountActions.updateStudentProfileData(data));
+        // navigate(`/${college}/student`);
+      }
+    } catch (error) {
+      toast.error("Something Went Wrong");
+      console.log(error);
+    }
   }
+
+  // useEffect(() => {
+  //   console.log("profile data", profileData)
+  //   if(!profileData) {
+  //     console.log("Call the student profile")
+  //     getStudentProfileData();
+  //   }
+  // }, [])
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -172,7 +196,7 @@ const MainLayout = () => {
             </Badge>
           </IconButton>
           <IconButton color="inherit" onClick={() => navigate("account")}>
-            <Avatar src={!isSuperAdmin ? `${BASE_API_URL}${profilePic}`: "" } sx={{ width: 30, height: 30 }}/>
+            <Avatar src={profilePic ? `${BASE_API_URL}${profilePic}`: "" } sx={{ width: 30, height: 30 }}/>
           </IconButton>
         </Toolbar>
       </AppBar>

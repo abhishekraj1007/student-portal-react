@@ -22,7 +22,7 @@ const signIN = async (signInDeatils) => {
 };
 
 const changeCollegePass = async (passwordData) => {
-  let token = JSON.parse(localStorage.getItem("collegeAdmin"));
+  let token = JSON.parse(localStorage.getItem("auth"));
   console.log("college Token", token.access_token);
   try {
     const response = await axios.put(
@@ -69,7 +69,7 @@ const changeMemberPass = async (passwordData) => {
 };
 
 const registerMember = async (registerData) => {
-  let token = JSON.parse(localStorage.getItem("collegeAdmin"));
+  let token = JSON.parse(localStorage.getItem("auth"));
   console.log("college Token", token.access_token);
   try {
     const response = await axios.post(

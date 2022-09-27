@@ -24,8 +24,8 @@ export const SuperAdminItems = () => {
       if (data.message) {
         console.log(data);
         dispatch(authActions.logout());
-        localStorage.removeItem('superAdmin')
-        navigate("/")
+        localStorage.removeItem('auth')
+        navigate("/login")
         toast.success(`${data.message}`);
       }
     } catch (error) {

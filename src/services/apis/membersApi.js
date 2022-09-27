@@ -22,7 +22,7 @@ const signIN = async (signInDeatils, college) => {
 };
 
 const studentProfile = async (college) => {
-  let token = JSON.parse(localStorage.getItem("member"));
+  let token = JSON.parse(localStorage.getItem("auth"));
   // console.log("Member Token", 'Bearer ' + token.access_token);
   try {
     const response = await axios.post(
@@ -47,7 +47,7 @@ const studentProfile = async (college) => {
 };
 
 const studentCourses = async (college) => {
-  let token = JSON.parse(localStorage.getItem("member"));
+  let token = JSON.parse(localStorage.getItem("auth"));
   // console.log("Member Token", 'Bearer ' + token.access_token);
   try {
     const response = await axios.post(
@@ -72,7 +72,7 @@ const studentCourses = async (college) => {
 };
 
 const studentExamForm = async (college, formData) => {
-  let token = JSON.parse(localStorage.getItem("member"));
+  let token = JSON.parse(localStorage.getItem("auth"));
   // console.log("Member Token", 'Bearer ' + token.access_token);
   try {
     const response = await axios.post(
@@ -102,7 +102,7 @@ const studentExamForm = async (college, formData) => {
 };
 
 const studentExamFormData = async (college) => {
-  let token = JSON.parse(localStorage.getItem("member"));
+  let token = JSON.parse(localStorage.getItem("auth"));
   // console.log("Member Token", 'Bearer ' + token.access_token);
   try {
     const response = await axios.post(

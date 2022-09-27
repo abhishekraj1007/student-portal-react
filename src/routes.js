@@ -13,67 +13,73 @@ const RegisterMember = Loadable(lazy(() => import("./pages/RegisterMember/Regist
 const StudentAccount = Loadable(lazy(() => import("./pages/Account/Account")));
 const StudentCourses = Loadable(lazy(() => import("./pages/Courses/Courses")));
 const StudentExamForm = Loadable(lazy(() => import("./pages/Exams/Exams")));
+const ViewCollegeMembers = Loadable(lazy(() => import("./pages/ViewColleges/components/CollegeSchema/CollegeSchema")));
+
 
 const routes = [
   {
     path: "/login",
-    element: (<SignIn />),
+    element: <SignIn />,
   },
 
   {
     path: "/",
-    element: (<MainLayout />),
+    element: <MainLayout />,
     children: [
       {
-        path: '',
+        path: "",
         element: <Dashboard />,
       },
       {
-        path: '/create-college',
+        path: "/create-college",
         element: <CreateCollege />,
       },
       {
-        path: '/colleges',
+        path: "/colleges",
         element: <ViewColleges />,
       },
       {
-        path: '/register-member',
+        path: "/colleges/:schema_name",
+        element: <ViewCollegeMembers />,
+      },
+      {
+        path: "/register-member",
         element: <RegisterMember />,
       },
-    ]
+    ],
   },
 
   {
     path: "/:college/login",
-    element: (<CollegeSignIn />),
+    element: <CollegeSignIn />,
   },
 
   {
     path: "/:college/student/login",
-    element: (<MemberSignIn />),
+    element: <MemberSignIn />,
   },
 
   {
     path: ":college/student",
-    element: (<MainLayout />),
+    element: <MainLayout />,
     children: [
       {
-        path: '',
+        path: "",
         element: <Dashboard />,
       },
       {
-        path: 'account',
+        path: "account",
         element: <StudentAccount />,
       },
       {
-        path: 'courses',
+        path: "courses",
         element: <StudentCourses />,
       },
       {
-        path: 'exam-form',
+        path: "exam-form",
         element: <StudentExamForm />,
       },
-    ]
+    ],
   },
 
   // {

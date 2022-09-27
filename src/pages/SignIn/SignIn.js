@@ -64,16 +64,21 @@ export default function SignIn() {
             userType: "",
           })
         );
+
         let obj = {
           userName: userData.username,
           access_token: userData.access_token,
+          isSuperAdmin: userData.is_superadmin,
+          isStudent: userData.is_student,
         };
-        if (userData.is_student) {
-          localStorage.setItem("member", JSON.stringify(obj));
-        }
-        if (userData.is_superadmin) {
-          localStorage.setItem("admin", JSON.stringify(obj));
-        }
+
+        localStorage.setItem("auth", JSON.stringify(obj));
+        // if (userData.is_student) {
+        //   localStorage.setItem("member", JSON.stringify(obj));
+        // }
+        // if (userData.is_superadmin) {
+        //   localStorage.setItem("admin", JSON.stringify(obj));
+        // }
 
         if (userData.is_student) {
           try {
