@@ -114,9 +114,16 @@ const deleteColleges = async ({ id }) => {
 };
 
 const logout = async () => {
+  let token = JSON.parse(localStorage.getItem("auth"));
   try {
     const response = await axios.post(
-      `${BASE_API_URL}/api/v1/super-admin/logout/`
+      `${BASE_API_URL}/api/v1/super-admin/logout/`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token.access_token}`,
+        },
+      }
     );
 
     return response.data;
