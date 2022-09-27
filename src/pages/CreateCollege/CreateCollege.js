@@ -1,5 +1,16 @@
 import { LoadingButton } from "@mui/lab";
-import { Box, Button, Card, Divider, Grid, Input, TextField, Avatar, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  Divider,
+  Grid,
+  Input,
+  TextField,
+  Avatar,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { useState } from "react";
 import superAdminApi from "../../services/apis/superAdminApi";
 import toast from "react-hot-toast";
@@ -29,6 +40,7 @@ export default function CreateCollege() {
   };
 
   const createColleges = async (collegeData) => {
+
     setLoading(true);
     try {
       const data = await superAdminApi.createCollege(collegeData);
@@ -36,7 +48,7 @@ export default function CreateCollege() {
       if (data.msg) {
         setLoading(false);
         console.log(data);
-        toast.error(`${data.msg}`);
+        toast.success(`${data.msg}`);
         // navigate("/dashboard");
       }
 
@@ -62,28 +74,18 @@ export default function CreateCollege() {
     });
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const form_data = new FormData();
 
-  const handleSubmit = () => {
-    // event.preventDefault();
-    // const data = new FormData(event.currentTarget);
-    // console.log("college data", data);
+    form_data.append("image", picture?.pictureAsFile);
+    form_data.append("college_name", collegeName);
+    form_data.append("username", userName);
+    form_data.append("email", email);
+    form_data.append("college_path", collegePath);
+    form_data.append("year_of_establishment", yearOfEst);
 
-    // if(!password) {
-    //   setPasswordError(true)
-    // } else {
-    //   setPasswordError(false)
-    // }
-    // calling Api
-    console.log("++++",picture?.pictureAsFile)
-    let collegeData = {
-      collegeName,
-      userName,
-      email,
-      collegePath,
-      yearOfEst,
-      image: picture?.pictureAsFile
-    }
-    createColleges(collegeData);
+    createColleges(form_data);
   };
 
   return (
@@ -212,10 +214,7 @@ export default function CreateCollege() {
               onChange={uploadPicture}
             />
             <label htmlFor="raised-button-file">
-              <Button
-                variant="contained"
-                component="span"
-              >
+              <Button variant="contained" component="span">
                 Upload a Logo
               </Button>
             </label>

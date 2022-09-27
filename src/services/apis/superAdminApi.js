@@ -7,7 +7,7 @@ const signIN = async (signInDeatils) => {
       `${BASE_API_URL}/api/v1/super-admin/login/`,
       {
         username: signInDeatils.username,
-        password: signInDeatils.password
+        password: signInDeatils.password,
       }
     );
 
@@ -23,16 +23,15 @@ const signIN = async (signInDeatils) => {
 
 const createCollege = async (collegeData) => {
   try {
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+      },
+    };
     const response = await axios.post(
       `${BASE_API_URL}/api/v1/colleges/`,
-      {
-        college_name: collegeData.collegeName,
-        username: collegeData.userName,
-        email: collegeData.email,
-        college_path: collegeData.collegePath,
-        year_of_establishment: collegeData.yearOFEst,
-        image: collegeData.image
-      }
+      collegeData,
+      config
     );
 
     return response.data;
@@ -47,9 +46,7 @@ const createCollege = async (collegeData) => {
 
 const getColleges = async () => {
   try {
-    const response = await axios.post(
-      `${BASE_API_URL}/api/v1/get-colleges/`
-    );
+    const response = await axios.post(`${BASE_API_URL}/api/v1/get-colleges/`);
 
     return response.data;
 
@@ -81,12 +78,12 @@ const getCollegeMembers = async ({ college_name }) => {
     const response = await axios.post(
       `${BASE_API_URL}/api/v1/college/members/`,
       {
-        college_name
+        college_name,
       },
       {
         headers: {
-          Authorization: `Bearer ${token.access_token}`
-        }
+          Authorization: `Bearer ${token.access_token}`,
+        },
       }
     );
 

@@ -240,8 +240,8 @@ export default function Exams() {
                 onChange={(e) => setExamType(e.target.value)}
                 fullWidth
               >
-                <MenuItem value={"MID_SEM"}>MID_SEM</MenuItem>
-                <MenuItem value={"FINAL_SEM"}>FINAL_SEM</MenuItem>
+                <MenuItem value={"MID_TERM"}>MID_TERM</MenuItem>
+                <MenuItem value={"FINAL_TERM"}>FINAL_TERM</MenuItem>
               </Select>
             </Grid>
             <Grid item container alignItems="center" xs={12} sm={4}>
