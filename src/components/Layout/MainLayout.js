@@ -195,7 +195,9 @@ const MainLayout = () => {
               <NotificationsIcon />
             </Badge>
           </IconButton>
-          <IconButton color="inherit" onClick={() => navigate("account")}>
+          <IconButton color="inherit" onClick={() => {
+            if(profilePic) navigate("account");
+          }}>
             <Avatar src={profilePic ? `${BASE_API_URL}${profilePic}`: "" } sx={{ width: 30, height: 30 }}/>
           </IconButton>
         </Toolbar>
