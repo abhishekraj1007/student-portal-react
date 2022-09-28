@@ -10,7 +10,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 export default function Courses() {
     const { college } = useParams();
     const [loading, setLoading] = useState(false);
-    const [courses, setCourses] = useState(null);
+    const [sems, setSems] = useState({});
 
     const departmentName = useSelector((state) => state.account.studentProfileData?.department_id?.department_name || "");
 
@@ -22,7 +22,7 @@ export default function Courses() {
         if (response) {
           setLoading(false);
           console.log(response.data);
-          setCourses(response.data);
+          setSems(response.data);
         }
       } catch (error) {
         setLoading(false);
@@ -44,14 +44,14 @@ export default function Courses() {
     ];
 
     const totalSemester = [
-      "Semester 1",
-      "Semester 2",
-      "Semester 3",
-      "Semester 4",
-      "Semester 5",
-      "Semester 6",
-      "Semester 7",
-      "Semester 8",
+      "SEM_1",
+      "SEM_2",
+      "SEM_3",
+      "SEM_4",
+      "SEM_5",
+      "SEM_6",
+      "SEM_7",
+      "SEM_8",
     ];
 
     return (
@@ -138,8 +138,8 @@ export default function Courses() {
                 <Typography variant="h3">{departmentName}</Typography>
               </Grid>
               <Grid item xs={12}>
-                {totalSemester?.map((sem, index) => (
-                  <Card elevation={6} key={`${sem}_${index}`} sx={{ mb: 2 }}>
+                {Object.keys(sems)?.map((sem, index) => (
+                  <Card elevation={6} key={`sem_${index}`} sx={{ mb: 2 }}>
                     <Accordion>
                       <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
@@ -150,8 +150,8 @@ export default function Courses() {
                       <Divider />
                       <AccordionDetails>
                         <Grid container spacing={2} padding={2}>
-                          {courses &&
-                            courses[`${sem}`]?.map((course, index) => (
+                          {sems &&
+                            sems[`${sem}`]?.map((course, index) => (
                               <Grid
                                 item
                                 xs={10}
