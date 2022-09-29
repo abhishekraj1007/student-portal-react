@@ -14,7 +14,7 @@ export default function Dashboard() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const authData = JSON.parse(localStorage.getItem("auth"))
 
-  if (!authData?.isStudent && !authData?.isSuperAdmin) return <Navigate replace to="/login" />;
+  if (!authData?.isStudent && !authData?.isSuperAdmin) return <Navigate replace to="login" />;
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>

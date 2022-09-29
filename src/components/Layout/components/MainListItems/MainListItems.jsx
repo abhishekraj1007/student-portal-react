@@ -11,7 +11,7 @@ export const MainListItems = () => {
 
   return (
     <React.Fragment>
-      <ListItemButton onClick={() => navigate("/dashboard")}>
+      <ListItemButton onClick={() => navigate("/")}>
         <ListItemIcon>
           <DashboardIcon />
         </ListItemIcon>
