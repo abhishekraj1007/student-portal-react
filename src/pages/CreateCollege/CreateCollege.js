@@ -10,8 +10,9 @@ import {
   Avatar,
   Stack,
   Typography,
+  FormHelperText,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import superAdminApi from "../../services/apis/superAdminApi";
 import toast from "react-hot-toast";
 
@@ -31,13 +32,49 @@ export default function CreateCollege() {
   const [usernameError, setUsernameError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [yearOfEstErr, setYearOfEstErr] = useState(false);
+  const [pictureErr, setPictureErr] = useState(false);
 
   const [invalidEmail, setInvalidEmail] = useState(false);
+  const [isSubmit, setSubmit] = useState(false)
 
   const validateRegex = (value, regex) => {
     const re = new RegExp(regex);
     return re.test(value);
   };
+
+  useEffect(() => {
+    if(collegeName ===  "") {
+      setCollegenameError(true);
+    } else {
+      setCollegenameError(false)
+    }
+    if(collegePath ===  "") {
+      setCollegePathErr(true);
+    } else {
+      setCollegePathErr(false)
+    }
+    if(userName ===  "") {
+      setUsernameError(true);
+    } else {
+      setUsernameError(false)
+    }
+    if(email ===  "") {
+      setEmailError(true);
+    } else {
+      setEmailError(false)
+    }
+    if(yearOfEst ===  "") {
+      setYearOfEstErr(true);
+    } else {
+      setYearOfEstErr(false)
+    }
+    if(picture ===  {}) {
+      setPictureErr(true);
+    } else {
+      setPictureErr(false)
+    }
+
+  }, [collegePath, collegeName, userName, email, yearOfEst, picture])
 
   const createColleges = async (collegeData) => {
 
@@ -77,6 +114,7 @@ export default function CreateCollege() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const form_data = new FormData();
+    setSubmit(true);
 
     form_data.append("image", picture?.pictureAsFile);
     form_data.append("college_name", collegeName);
@@ -85,7 +123,18 @@ export default function CreateCollege() {
     form_data.append("college_path", collegePath);
     form_data.append("year_of_establishment", yearOfEst);
 
-    createColleges(form_data);
+    if (
+      collegeName &&
+      collegePath &&
+      yearOfEst &&
+      userName &&
+      picture?.pictureAsFile &&
+      email && 
+      validateRegex(email, EMAIL_REGEX)
+    ) {
+      createColleges(form_data);
+    }
+
   };
 
   return (
@@ -117,7 +166,7 @@ export default function CreateCollege() {
               value={collegeName}
               onChange={(e) => setCollegeName(e.target.value)}
               fullWidth
-              {...(collegenameError
+              {...(collegeName === "" && isSubmit
                 ? {
                     error: true,
                     helperText: "College Name is Required",
@@ -135,7 +184,7 @@ export default function CreateCollege() {
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
                 fullWidth
-                {...(usernameError
+                {...(userName === "" && isSubmit
                   ? {
                       error: true,
                       helperText: "Username is Required",
@@ -153,13 +202,13 @@ export default function CreateCollege() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 fullWidth
-                {...(emailError
+                {...(email === "" && isSubmit
                   ? {
                       error: true,
                       helperText: "Email is Required",
                     }
                   : null)}
-                {...(!emailError && invalidEmail
+                {...(email !== "" && !validateRegex(email, EMAIL_REGEX)
                   ? {
                       error: true,
                       helperText: "Invalid Email",
@@ -178,7 +227,7 @@ export default function CreateCollege() {
                 value={collegePath}
                 onChange={(e) => setCollegePath(e.target.value)}
                 fullWidth
-                {...(collegePathErr
+                {...(collegePath === "" && isSubmit
                   ? {
                       error: true,
                       helperText: "College Path is Required",
@@ -195,7 +244,7 @@ export default function CreateCollege() {
                 value={yearOfEst}
                 onChange={(e) => setYearOfEst(e.target.value)}
                 fullWidth
-                {...(yearOfEstErr
+                {...(yearOfEst === "" && isSubmit
                   ? {
                       error: true,
                       helperText: "Year Of Establishment is Required",
@@ -205,19 +254,26 @@ export default function CreateCollege() {
             </Grid>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <input
-              accept="image/*"
-              style={{ display: "none" }}
-              id="raised-button-file"
-              multiple
-              type="file"
-              onChange={uploadPicture}
-            />
-            <label htmlFor="raised-button-file">
-              <Button variant="contained" component="span">
-                Upload a Logo
-              </Button>
-            </label>
+            <Box>
+              <input
+                accept="image/*"
+                style={{ display: "none" }}
+                id="raised-button-file"
+                multiple
+                type="file"
+                onChange={uploadPicture}
+              />
+              <label htmlFor="raised-button-file">
+                <Button variant="contained" component="span">
+                  Upload a Logo
+                </Button>
+              </label>
+            </Box>
+            {!picture?.pictureAsFile && isSubmit && (
+              <Box>
+                <FormHelperText error>{"Logo is Required"}</FormHelperText>
+              </Box>
+            )}
           </Grid>
         </Grid>
         <Divider />
