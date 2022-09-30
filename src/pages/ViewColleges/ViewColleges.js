@@ -71,7 +71,7 @@ export default function ViewColleges() {
       tableRowsContent = (
         <>
           {colleges?.map((data, index) => {
-            let { id, name, image, email, username, schema_name, created_on, year_of_establishment, } = data;
+            let { id, name, image, email, username, schema_name, created_on, year_of_establishment, url, password } = data;
             return (
               <TableRow
                 key={`${id}_${index}`}
@@ -93,11 +93,15 @@ export default function ViewColleges() {
                     <VisibilityIcon />
                   </IconButton>
                 </TableCell>
-                <TableCell>{id}</TableCell>
                 <TableCell>{year_of_establishment}</TableCell>
                 <TableCell>{name}</TableCell>
-                <TableCell>{schema_name}</TableCell>
                 <TableCell>{username}</TableCell>
+                <TableCell>
+                  <Link href={`http://${url}`} target="_blank">
+                    {url}
+                  </Link>
+                </TableCell>
+                <TableCell>{password}</TableCell>
                 <TableCell>{email}</TableCell>
                 <TableCell>{created_on}</TableCell>
                 <TableCell>
@@ -140,11 +144,11 @@ export default function ViewColleges() {
               <TableHead>
                 <TableRow>
                   <TableCell>Action</TableCell>
-                  <TableCell>ID</TableCell>
                   <TableCell>Est.</TableCell>
                   <TableCell>College Name</TableCell>
-                  <TableCell>Schema Name</TableCell>
                   <TableCell>User Name</TableCell>
+                  <TableCell>College Url</TableCell>
+                  <TableCell>Password</TableCell>
                   <TableCell>Email</TableCell>
                   <TableCell>Created On</TableCell>
                   <TableCell>Logo</TableCell>
