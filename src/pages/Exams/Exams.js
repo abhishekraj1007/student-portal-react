@@ -181,6 +181,7 @@ export default function Exams() {
                 id="studentID"
                 label="Student ID"
                 value={studentID}
+                disabled={studentID?.length !== 0 ? true : false}
                 name="studentID"
                 onChange={(e) => setStudentID(e.target.value)}
                 fullWidth
@@ -193,6 +194,7 @@ export default function Exams() {
                 label="Name"
                 name="name"
                 value={name}
+                disabled={name?.length !== 0 ? true : false}
                 onChange={(e) => setName(e.target.value)}
                 fullWidth
               />
@@ -204,7 +206,8 @@ export default function Exams() {
                 label="Mobile"
                 name="mobile"
                 value={mobile}
-                type="number"
+                disabled={mobile?.length !== 0 ? true : false}
+                // type="number"
                 onChange={(e) => setMobile(e.target.value)}
                 fullWidth
               />
@@ -216,6 +219,7 @@ export default function Exams() {
                 label="Semester"
                 name="semester"
                 value={semester}
+                disabled={semester?.length !== 0 ? true : false}
                 onChange={(e) => setSemester(e.target.value)}
                 fullWidth
               />
@@ -227,6 +231,7 @@ export default function Exams() {
                 label="Department"
                 name="department"
                 value={department}
+                disabled={department?.length !== 0 ? true : false}
                 onChange={(e) => setDepartment(e.target.value)}
                 fullWidth
               />
@@ -251,6 +256,7 @@ export default function Exams() {
                   label="Exam Session"
                   value={examSession}
                   name="examSession"
+                  disabled={examSession.length !== 0 ? true : false}
                   onChange={(newValue) => {
                     setExamSession(newValue);
                   }}
