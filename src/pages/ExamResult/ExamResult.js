@@ -69,7 +69,29 @@ export default function ExamResult() {
                         expandIcon={<ExpandMoreIcon />}
                         sx={{ p: 2 }}
                       >
-                        <Typography variant="h5">{sem}</Typography>
+                        <Stack>
+                          <Typography variant="h5">{sem}</Typography>
+                          <Box sx={{ py: 1 }}>
+                            <Typography
+                              variant="subtitle2"
+                              sx={{
+                                mr: 1,
+                                fontWeight: "600",
+                                fontSize: "0.9rem",
+                                color: "rgba(0, 0, 0, 0.68)"
+                              }}
+                            >{`Secured Marks: ${sems?.[`${sem}`][2]?.SM}`}</Typography>
+                            <Typography
+                              variant="subtitle2"
+                              sx={{
+                                mr: 1,
+                                fontWeight: "600",
+                                fontSize: "0.9rem",
+                                color: "rgba(0, 0, 0, 0.68)"
+                              }}
+                            >{`Full Marks: ${sems?.[`${sem}`][2]?.FM}`}</Typography>
+                          </Box>
+                        </Stack>
                       </AccordionSummary>
                       <Divider />
                       <AccordionDetails>
