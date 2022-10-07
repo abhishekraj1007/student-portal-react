@@ -43,17 +43,6 @@ export default function Courses() {
       { variant_1: "h3", variant_2: "caption", variant_3: "h1" },
     ];
 
-    const totalSemester = [
-      "SEM_1",
-      "SEM_2",
-      "SEM_3",
-      "SEM_4",
-      "SEM_5",
-      "SEM_6",
-      "SEM_7",
-      "SEM_8",
-    ];
-
     return (
       <Box>
         {loading && (
@@ -95,44 +84,6 @@ export default function Courses() {
 
         {!loading && (
           <>
-            {/* <Grid container padding={2} spacing={2}>
-              {courses["1-sem"]?.map((course, index) => (
-                <Grid
-                  item
-                  xs={10}
-                  md={6}
-                  key={`${course.course_name}_${index}`}
-                >
-                  <Card elevation={6}>
-                    <Stack spacing={2} padding={2}>
-                      <Paper
-                        variant="outlined"
-                        sx={{
-                          backgroundColor: "rgba(242, 242, 242, 0.2)",
-                          p: 1,
-                        }}
-                      >
-                        <Box mb={1.5}>
-                          <Typography variant="h6">
-                            {course.course_name}
-                          </Typography>
-                        </Box>
-                        <Box>
-                          <Typography variant="subtitle2">
-                            {`Credit: ${course.credit}`}
-                          </Typography>
-                        </Box>
-                      </Paper>
-                      <Box>
-                        <Typography variant="subtitle1">
-                          {course.course_description}
-                        </Typography>
-                      </Box>
-                    </Stack>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid> */}
             <Grid container padding={2} spacing={2}>
               <Grid item xs={12} sx={{ my: 2 }}>
                 <Typography variant="h3">{departmentName}</Typography>

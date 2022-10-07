@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { authActions } from "../../../../../../store/slices/authSlice";
 import superAdminApi from "../../../../../../services/apis/superAdminApi";
 import toast from "react-hot-toast";
+import { Tooltip } from "@mui/material";
 
 export const SuperAdminItems = () => {
   const dispatch = useDispatch();
@@ -40,22 +41,28 @@ export const SuperAdminItems = () => {
           User
         </ListSubheader> */}
       <ListItemButton onClick={() => navigate("/create-college")}>
-        <ListItemIcon>
-          <AddIcon />
-        </ListItemIcon>
+        <Tooltip title="Create" placement="right">
+          <ListItemIcon>
+            <AddIcon />
+          </ListItemIcon>
+        </Tooltip>
         <ListItemText primary="Create College" />
       </ListItemButton>
       <ListItemButton onClick={() => navigate("/colleges")}>
-        <ListItemIcon>
-          <SchoolIcon />
-        </ListItemIcon>
+        <Tooltip title="Colleges" placement="right">
+          <ListItemIcon>
+            <SchoolIcon />
+          </ListItemIcon>
+        </Tooltip>
         <ListItemText primary="View Colleges" />
       </ListItemButton>
 
       <ListItemButton onClick={handleLogout}>
-        <ListItemIcon>
-          <LogoutIcon />
-        </ListItemIcon>
+        <Tooltip title="Sign out" placement="right">
+          <ListItemIcon>
+            <LogoutIcon />
+          </ListItemIcon>
+        </Tooltip>
         <ListItemText primary="Sign out" />
       </ListItemButton>
     </React.Fragment>

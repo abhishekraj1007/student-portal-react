@@ -26,6 +26,7 @@ export default function CreateCollege() {
   const [email, setEmail] = useState("");
   const [yearOfEst, setYearOfEst] = useState("");
   const [picture, setPicture] = useState({});
+  const [collegeCode, setCollegeCode] = useState("")
 
   const [collegePathErr, setCollegePathErr] = useState(false);
   const [collegenameError, setCollegenameError] = useState(false);
@@ -122,6 +123,7 @@ export default function CreateCollege() {
     form_data.append("email", email);
     form_data.append("college_path", collegePath);
     form_data.append("year_of_establishment", yearOfEst);
+    form_data.append("college_code", collegeCode);
 
     if (
       collegeName &&
@@ -129,7 +131,8 @@ export default function CreateCollege() {
       yearOfEst &&
       userName &&
       picture?.pictureAsFile &&
-      email && 
+      email &&
+      collegeCode &&
       validateRegex(email, EMAIL_REGEX)
     ) {
       createColleges(form_data);
@@ -218,7 +221,7 @@ export default function CreateCollege() {
             </Grid>
           </Grid>
           <Grid item container spacing={2} xs={12}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={4}>
               <TextField
                 required
                 id="collegePath"
@@ -235,7 +238,24 @@ export default function CreateCollege() {
                   : null)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={4}>
+              <TextField
+                required
+                id="collegeCode"
+                label="College Code"
+                name="collegeCode"
+                value={collegeCode}
+                onChange={(e) => setCollegeCode(e.target.value)}
+                fullWidth
+                {...(collegeCode === "" && isSubmit
+                  ? {
+                      error: true,
+                      helperText: "College Code is Required",
+                    }
+                  : null)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
               <TextField
                 required
                 id="yearOfEst"

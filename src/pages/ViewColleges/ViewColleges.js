@@ -5,7 +5,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Box, Card, IconButton, Paper, Typography, Link } from "@mui/material";
+import { Box, Card, IconButton, Paper, Typography, Link, Tooltip } from "@mui/material";
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useState, useEffect } from "react";
@@ -56,7 +56,7 @@ export default function ViewColleges() {
     navigate(`/colleges/${schema_name}`);
   };
 
-  let tableRowsContent = <TableSkeletonLoading rowPerPage={10} colPerPage={9} />;
+  let tableRowsContent = <TableSkeletonLoading rowPerPage={10} colPerPage={10} />;
 
   if (!loading) {
     if (colleges.length === 0) {
@@ -71,30 +71,35 @@ export default function ViewColleges() {
       tableRowsContent = (
         <>
           {colleges?.map((data, index) => {
-            let { id, name, image, email, username, schema_name, created_on, year_of_establishment, url, password } = data;
+            let { id, name, college_code, image, email, username, schema_name, created_on, year_of_establishment, url, password } = data;
             return (
               <TableRow
                 key={`${id}_${index}`}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell>
-                  <IconButton
-                    size="small"
-                    onClick={() => onDeleteHandler(id)}
-                    color="primary"
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                  <IconButton
-                    size="small"
-                    onClick={() => onViewHandler(schema_name)}
-                    color="primary"
-                  >
-                    <VisibilityIcon />
-                  </IconButton>
+                  <Tooltip title="Delete" placement="top">
+                    <IconButton
+                      size="small"
+                      onClick={() => onDeleteHandler(id)}
+                      color="primary"
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="View" placement="top">
+                    <IconButton
+                      size="small"
+                      onClick={() => onViewHandler(schema_name)}
+                      color="primary"
+                    >
+                      <VisibilityIcon />
+                    </IconButton>
+                  </Tooltip>
                 </TableCell>
                 <TableCell>{year_of_establishment}</TableCell>
                 <TableCell>{name}</TableCell>
+                <TableCell>{college_code}</TableCell>
                 <TableCell>{username}</TableCell>
                 <TableCell>
                   <Link href={`http://${url}`} target="_blank">
@@ -146,6 +151,7 @@ export default function ViewColleges() {
                   <TableCell>Action</TableCell>
                   <TableCell>Est.</TableCell>
                   <TableCell>College Name</TableCell>
+                  <TableCell>College Code</TableCell>
                   <TableCell>User Name</TableCell>
                   <TableCell>College Url</TableCell>
                   <TableCell>Password</TableCell>

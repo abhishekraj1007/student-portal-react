@@ -394,6 +394,54 @@ export default function MyProfile() {
                   sx={{ border: "1px solid rgba(209, 209, 209, 0.5)" }}
                 >
                   <Grid item xs={4} padding={1}>
+                    {"Session Start"}
+                  </Grid>
+                  <Grid
+                    item
+                    xs={0.5}
+                    sx={{
+                      textAlign: "center",
+                      borderInline: "1px solid rgba(209, 209, 209, 0.5)",
+                    }}
+                    padding={1}
+                  >
+                    {":"}
+                  </Grid>
+                  <Grid item xs={7} padding={1}>
+                    {profileData?.session_start_date}
+                  </Grid>
+                </Grid>
+                <Grid
+                  container
+                  item
+                  xs={12}
+                  sx={{ border: "1px solid rgba(209, 209, 209, 0.5)" }}
+                >
+                  <Grid item xs={4} padding={1}>
+                    {"Session End"}
+                  </Grid>
+                  <Grid
+                    item
+                    xs={0.5}
+                    sx={{
+                      textAlign: "center",
+                      borderInline: "1px solid rgba(209, 209, 209, 0.5)",
+                    }}
+                    padding={1}
+                  >
+                    {":"}
+                  </Grid>
+                  <Grid item xs={7} padding={1}>
+                    {profileData?.session_end_date}
+                  </Grid>
+                </Grid>
+                <Grid
+                  container
+                  item
+                  xs={12}
+                  sx={{ border: "1px solid rgba(209, 209, 209, 0.5)" }}
+                >
+                  <Grid item xs={4} padding={1}>
                     {"HOD"}
                   </Grid>
                   <Grid
