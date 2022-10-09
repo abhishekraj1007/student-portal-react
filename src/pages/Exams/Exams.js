@@ -1,5 +1,5 @@
 import { LoadingButton } from "@mui/lab";
-import { Box, Card, Divider, Grid, InputLabel, Paper, MenuItem, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
+import { Box, Card, Divider, Grid, InputLabel, Paper, MenuItem, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, FormControl } from "@mui/material";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,6 +20,9 @@ export default function Exams() {
   const [examSession, setExamSession] = useState(new Date());
   const [feeAmount, setFeeAmount] = useState("");
   const [feeRecieptNo, setFeeRecieptNo] = useState("");
+
+  const [allSems, setAllSems] = useState([]);
+  const [allExamTerms, setAllExamTerms] = useState([]);
   const { college } = useParams();
 
   const userData = useSelector((state) => state.account?.studentProfileData);
@@ -30,7 +33,7 @@ export default function Exams() {
     setStudentID(userData?.studentID);
     setName(userData?.user?.username);
     setMobile(userData?.user?.mobile);
-    setSemester(userData?.semester?.semester_code);
+    // setSemester(userData?.semester?.semester_code);
     setDepartment(userData?.department_id?.department_name)
   }, [userData])
 
@@ -43,6 +46,13 @@ export default function Exams() {
         setLoading(false);
         console.log(data);
         toast.success(`${data.message}`);
+        // navigate("/dashboard");
+      }
+
+      if (data.messages) {
+        setLoading(false);
+        console.log(data);
+        toast.error(`${data.messages}`);
         // navigate("/dashboard");
       }
 
@@ -85,7 +95,47 @@ export default function Exams() {
     }
   };
 
+  const getAllSems = async () => {
+    // setLoading(true);
+    try {
+      const response = await membersApi.getSemesters(college);
+
+      if (response.data) {
+        // setLoading(false);
+        console.log(response.data);
+        setAllSems(response.data)
+        // toast.success(`${data.message}`);
+        // navigate("/dashboard");
+      }
+    } catch (error) {
+      // setLoading(false);
+      toast.error("Something Went Wrong");
+      console.log(error);
+    }
+  };
+
+  const getAllTerms = async () => {
+    // setLoading(true);
+    try {
+      const response = await membersApi.getExamTerms(college);
+
+      if (response.data) {
+        // setLoading(false);
+        console.log(response.data);
+        setAllExamTerms(response.data)
+        // toast.success(`${data.message}`);
+        // navigate("/dashboard");
+      }
+    } catch (error) {
+      // setLoading(false);
+      toast.error("Something Went Wrong");
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
+    getAllSems();
+    getAllTerms();
     getFormData();
   }, [])
 
@@ -95,35 +145,19 @@ export default function Exams() {
     // const data = new FormData(event.currentTarget);
     // console.log("exam form data", data);
 
-    // console.log({
-    //   studentID: data.get("collegeName"),
-    //   name: data.get("userName"),
-    //   mobile: data.get("email"),
-    //   semester: data.get("semester"),
-    //   department: data.get("department"),
-    //   examType: data.get("examType"),
-    //   examSession: data.get("examSession"),
-    //   feeAmount: data.get("feeAmount"),
-    //   feeRecieptNo: data.get("feeRecieptNo"),
-    // });
-
-    // let collegeName = data.get("collegeName");
-    // let username = data.get("userName");
-    // let email = data.get("email");
-    // let password = data.get("password");
-    // console.log("dataaa", `${examSession.getFullYear()}`)
-    if (examType && examSession && feeAmount && feeRecieptNo) {
+    if (examType && examSession && feeAmount && feeRecieptNo && semester) {
         let formData = {
             examType,
             examSession: `${examSession.getFullYear()}`,
             feeAmount,
-            feeRecieptNo
+            feeRecieptNo,
+            semester
         }
         getFormFilledUp(formData);
     }
   };
 
-  let tableRowsContent = <TableSkeletonLoading rowPerPage={10} />;
+  let tableRowsContent = <TableSkeletonLoading rowPerPage={10} colPerPage={8}/>;
 
   if (!loading) {
     if (allFormData.length === 0) {
@@ -149,8 +183,8 @@ export default function Exams() {
                 <TableCell>{fee_paid_amount}</TableCell>
                 <TableCell>{fee_reciept_ref_no}</TableCell>
                 <TableCell>{acknowledgement_status}</TableCell>
-                <TableCell>{data.semester_id.semester_code}</TableCell>
-                <TableCell>{data.department_id.department_name}</TableCell>
+                <TableCell>{data?.semester_id?.semester_code}</TableCell>
+                <TableCell>{data?.department_id?.department_name}</TableCell>
                 <TableCell>{data?.department_id?.instructor?.username}</TableCell>
               </TableRow>
             );
@@ -213,16 +247,22 @@ export default function Exams() {
               />
             </Grid>
             <Grid item xs={12} sm={4}>
-              <TextField
-                required
-                id="semester"
-                label="Semester"
-                name="semester"
-                value={semester}
-                disabled={semester?.length !== 0 ? true : false}
-                onChange={(e) => setSemester(e.target.value)}
-                fullWidth
-              />
+              <FormControl fullWidth>
+                <InputLabel>Semester</InputLabel>
+                <Select
+                  name="semester"
+                  value={semester}
+                  label="Semester"
+                  onChange={(e) => setSemester(e.target.value)}
+                  fullWidth
+                >
+                  {allSems?.map((data, index) => (
+                    <MenuItem value={data.semester_code} key={`${data.semester_code}_${index}`}>
+                      {data.semester_code}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Grid>
             <Grid item xs={12} sm={4}>
               <TextField
@@ -237,17 +277,36 @@ export default function Exams() {
               />
             </Grid>
             <Grid item xs={12} sm={4}>
-              <Select
-                id="examType"
-                value={examType}
-                label="Exam Type"
-                placeholder="Exam Type"
-                onChange={(e) => setExamType(e.target.value)}
-                fullWidth
-              >
-                <MenuItem value={"MID_TERM"}>MID_TERM</MenuItem>
-                <MenuItem value={"FINAL_TERM"}>FINAL_TERM</MenuItem>
-              </Select>
+              {/* <FormControl fullWidth>
+                <InputLabel id="exam-type-label">Exam Type</InputLabel>
+                <Select
+                  id="examType"
+                  value={examType}
+                  label="Exam Type"
+                  placeholder="Exam Type"
+                  onChange={(e) => setExamType(e.target.value)}
+                  fullWidth
+                >
+                  <MenuItem value={"MID_TERM"}>MID_TERM</MenuItem>
+                  <MenuItem value={"FINAL_TERM"}>FINAL_TERM</MenuItem>
+                </Select>
+              </FormControl> */}
+              <FormControl fullWidth>
+                <InputLabel id="exam-type-label">Exam Type</InputLabel>
+                <Select
+                  name="examType"
+                  value={examType}
+                  label="Exam Type"
+                  onChange={(e) => setExamType(e.target.value)}
+                  fullWidth
+                >
+                  {allExamTerms?.map((data, index) => (
+                    <MenuItem value={data.exam_type} key={`${data.exam_type}_${index}`}>
+                      {data.exam_type}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Grid>
             <Grid item container alignItems="center" xs={12} sm={4}>
               <Grid item xs={12}>
@@ -256,7 +315,7 @@ export default function Exams() {
                   label="Exam Session"
                   value={examSession}
                   name="examSession"
-                  disabled={examSession.length !== 0 ? true : false}
+                  // disabled={examSession.length !== 0 ? true : false}
                   onChange={(newValue) => {
                     setExamSession(newValue);
                   }}

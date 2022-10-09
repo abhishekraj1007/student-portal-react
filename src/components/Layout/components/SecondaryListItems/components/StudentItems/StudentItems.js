@@ -9,26 +9,29 @@ import CollectionsBookmarkIcon from '@mui/icons-material/CollectionsBookmark';
 import ImportContactsIcon from '@mui/icons-material/ImportContacts';
 
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { authActions } from "../../../../../../store/slices/authSlice";
 import collegeApi from "../../../../../../services/apis/collegeApi";
 import toast from "react-hot-toast";
+import { Tooltip } from "@mui/material";
+import membersApi from "../../../../../../services/apis/membersApi";
 
 export const StudentItems = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { college } = useParams();
 
   const handleLogout = async () => {
     try {
-      const data = await collegeApi.logout();
+      const data = await membersApi.logout(college);
 
-      if (data.message) {
+      if (data.msg) {
         console.log(data);
         dispatch(authActions.logout());
-        localStorage.removeItem('auth')
-        navigate("/dav")
-        toast.success(`${data.message}`);
+        localStorage.removeItem('auth');
+        navigate(`/${college}/student/login`);
+        toast.success(`${data.msg}`);
       }
     } catch (error) {
       toast.error("Something Went Wrong");
@@ -42,30 +45,38 @@ export const StudentItems = () => {
           User
         </ListSubheader> */}
       <ListItemButton onClick={() => navigate("courses")}>
-        <ListItemIcon>
-          <CollectionsBookmarkIcon />
-        </ListItemIcon>
+        <Tooltip title="Courses" placement="right">
+          <ListItemIcon>
+            <CollectionsBookmarkIcon />
+          </ListItemIcon>
+        </Tooltip>
         <ListItemText primary="Courses" />
       </ListItemButton>
       <ListItemButton onClick={() => navigate("exam-form")}>
-        <ListItemIcon>
-          <ImportContactsIcon />
-        </ListItemIcon>
+        <Tooltip title="Exams" placement="right">
+          <ListItemIcon>
+            <ImportContactsIcon />
+          </ListItemIcon>
+        </Tooltip>
         <ListItemText primary="Exams" />
       </ListItemButton>
-      {/* <ListItemButton onClick={() => navigate("/colleges")}>
-        <ListItemIcon>
-          <SchoolIcon />
-        </ListItemIcon>
-        <ListItemText primary="View Colleges" />
-      </ListItemButton> */}
+      <ListItemButton onClick={() => navigate("exam-result")}>
+        <Tooltip title="Result" placement="right">
+          <ListItemIcon>
+            <ImportContactsIcon />
+          </ListItemIcon>
+        </Tooltip>
+        <ListItemText primary="Result" />
+      </ListItemButton>
 
-      {/* <ListItemButton onClick={handleLogout}>
-        <ListItemIcon>
-          <LogoutIcon />
-        </ListItemIcon>
+      <ListItemButton onClick={handleLogout}>
+        <Tooltip title="Sign out" placement="right">
+          <ListItemIcon>
+            <LogoutIcon />
+          </ListItemIcon>
+        </Tooltip>
         <ListItemText primary="Sign out" />
-      </ListItemButton> */}
+      </ListItemButton>
     </React.Fragment>
   );
 };

@@ -71,6 +71,31 @@ const studentCourses = async (college) => {
   return {};
 };
 
+const studentExamResult = async (college) => {
+  let token = JSON.parse(localStorage.getItem("auth"));
+  // console.log("Member Token", 'Bearer ' + token.access_token);
+  try {
+    const response = await axios.post(
+      `${BASE_API_URL}/college/${college}/api/v1/student-result/`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token.access_token}`
+        }
+      }
+    );
+
+    return response.data;
+  } catch (e) {
+    console.log("error", e);
+    if (!axios.isCancel(e)) {
+      throw e;
+    }
+  }
+  
+  return {};
+};
+
 const studentExamForm = async (college, formData) => {
   let token = JSON.parse(localStorage.getItem("auth"));
   // console.log("Member Token", 'Bearer ' + token.access_token);
@@ -81,7 +106,8 @@ const studentExamForm = async (college, formData) => {
         exam_type: formData.examType,
         exam_session: formData.examSession,
         fee_paid_amount: formData.feeAmount,
-        fee_reciept_ref_no: formData.feeRecieptNo
+        fee_reciept_ref_no: formData.feeRecieptNo,
+        semester: formData.semester
       },
       {
         headers: {
@@ -146,10 +172,59 @@ const getCollegeLogo = async (collegeName) => {
   return {};
 };
 
-const logout = async () => {
+const getSemesters = async (college) => {
+  let token = JSON.parse(localStorage.getItem("auth"));
   try {
     const response = await axios.post(
-      `${BASE_API_URL}/api/v1/member/logout/`
+      `${BASE_API_URL}/college/${college}/api/v1/student-semester/`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token.access_token}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (e) {
+    console.log("error", e);
+    if (!axios.isCancel(e)) {
+      throw e;
+    }
+  }
+  return {};
+};
+
+const getExamTerms = async (college) => {
+  // let token = JSON.parse(localStorage.getItem("auth"));
+  try {
+    const response = await axios.post(
+      `${BASE_API_URL}/college/${college}/api/v1/student-exam-type/`,
+      {},
+    );
+
+    return response.data;
+  } catch (e) {
+    console.log("error", e);
+    if (!axios.isCancel(e)) {
+      throw e;
+    }
+  }
+  return {};
+};
+
+
+const logout = async (college) => {
+  let token = JSON.parse(localStorage.getItem("auth"));
+  try {
+    const response = await axios.post(
+      `${BASE_API_URL}/college/${college}/api/v1/college/logout/`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token.access_token}`,
+        },
+      }
     );
 
     return response.data;
@@ -170,6 +245,9 @@ const membersApi = {
   getCollegeLogo,
   studentExamForm,
   studentExamFormData,
+  getSemesters,
+  getExamTerms,
+  studentExamResult,
 };
 
 export default membersApi;

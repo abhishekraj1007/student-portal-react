@@ -14,6 +14,7 @@ const StudentAccount = Loadable(lazy(() => import("./pages/Account/Account")));
 const StudentCourses = Loadable(lazy(() => import("./pages/Courses/Courses")));
 const StudentExamForm = Loadable(lazy(() => import("./pages/Exams/Exams")));
 const ViewCollegeMembers = Loadable(lazy(() => import("./pages/ViewColleges/components/CollegeSchema/CollegeSchema")));
+const StudentExamResult = Loadable(lazy(() => import("./pages/ExamResult/ExamResult")));
 
 
 const routes = [
@@ -78,6 +79,10 @@ const routes = [
       {
         path: "exam-form",
         element: <StudentExamForm />,
+      },
+      {
+        path: "exam-result",
+        element: <StudentExamResult />,
       },
     ],
   },
