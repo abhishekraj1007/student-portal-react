@@ -19,12 +19,6 @@ export const MainListItems = () => {
 
   return (
     <React.Fragment>
-<<<<<<< HEAD
-      <ListItemButton onClick={() => null}>
-        <ListItemIcon>
-          <DashboardIcon />
-        </ListItemIcon>
-=======
       <ListItemButton
         onClick={() => {
           if (college) navigate(`/${college}/student`);
@@ -36,7 +30,6 @@ export const MainListItems = () => {
             <DashboardIcon />
           </ListItemIcon>
         </Tooltip>
->>>>>>> 5f2419640be9551340e43c4ea6f34f54226701ee
         <ListItemText primary="Dashboard" />
       </ListItemButton>
       {college && (
