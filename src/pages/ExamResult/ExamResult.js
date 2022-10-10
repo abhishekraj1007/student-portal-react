@@ -72,24 +72,40 @@ export default function ExamResult() {
                         <Stack>
                           <Typography variant="h5">{sem}</Typography>
                           <Box sx={{ py: 1 }}>
-                            <Typography
-                              variant="subtitle2"
-                              sx={{
-                                mr: 1,
-                                fontWeight: "600",
-                                fontSize: "0.9rem",
-                                color: "rgba(0, 0, 0, 0.68)"
-                              }}
-                            >{`Secured Marks: ${sems?.[`${sem}`][2]?.SM}`}</Typography>
-                            <Typography
-                              variant="subtitle2"
-                              sx={{
-                                mr: 1,
-                                fontWeight: "600",
-                                fontSize: "0.9rem",
-                                color: "rgba(0, 0, 0, 0.68)"
-                              }}
-                            >{`Full Marks: ${sems?.[`${sem}`][2]?.FM}`}</Typography>
+                            {sems[`${sem}`]?.map((item) => {
+                              return (
+                                <>
+                                  {item?.SM && (
+                                    <Typography
+                                      variant="subtitle2"
+                                      sx={{
+                                        mr: 1,
+                                        fontWeight: "600",
+                                        fontSize: "0.9rem",
+                                        color: "rgba(0, 0, 0, 0.68)",
+                                      }}
+                                    >{`Secured Marks: ${item.SM}`}</Typography>
+                                  )}
+                                </>
+                              );
+                            })}
+                            {sems[`${sem}`]?.map((item) => {
+                              return (
+                                <>
+                                  {item?.FM && (
+                                    <Typography
+                                      variant="subtitle2"
+                                      sx={{
+                                        mr: 1,
+                                        fontWeight: "600",
+                                        fontSize: "0.9rem",
+                                        color: "rgba(0, 0, 0, 0.68)",
+                                      }}
+                                    >{`Full Marks: ${item.FM}`}</Typography>
+                                  )}
+                                </>
+                              );
+                            })}
                           </Box>
                         </Stack>
                       </AccordionSummary>
