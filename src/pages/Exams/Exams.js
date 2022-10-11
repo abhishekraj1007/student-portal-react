@@ -8,6 +8,9 @@ import toast from "react-hot-toast";
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useEffect } from "react";
 import TableSkeletonLoading from "../../components/ui/TableSkeletonLoading";
+import { PdfDocument } from "../../components/ui/AdmitCard";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import { Downloading } from "@mui/icons-material";
 // studentID, name, mobile no, current semester, department
 export default function Exams() {
   const [loading, setLoading] = useState(false);
@@ -27,6 +30,10 @@ export default function Exams() {
 
   const userData = useSelector((state) => state.account?.studentProfileData);
   const [allFormData, setAllFormData] = useState([]);
+
+  const [admitLoading, setAdmitLoading] = useState(false);
+  const [admitDetails, setAdmitDetails] = useState([]);
+  const [cardId, setCardId] = useState(null);
 
   const renderOnce = useRef(true);
 
@@ -163,7 +170,25 @@ export default function Exams() {
     }
   };
 
-  let tableRowsContent = <TableSkeletonLoading rowPerPage={10} colPerPage={8}/>;
+  const handleDownload = async (id) => {
+    setCardId(id)
+    setAdmitLoading(true);
+    try {
+      const response = await membersApi.getAdmitCard(college, id);
+
+      if (response.data) {
+        setAdmitLoading(false);
+        console.log(response.data);
+        setAdmitDetails(response.data);
+      }
+    } catch (error) {
+      setAdmitLoading(false);
+      toast.error("Something Went Wrong");
+      console.log(error);
+    }
+  }
+
+  let tableRowsContent = <TableSkeletonLoading rowPerPage={10} colPerPage={9}/>;
 
   if (!loading) {
     if (allFormData.length === 0) {
@@ -178,7 +203,7 @@ export default function Exams() {
       tableRowsContent = (
         <>
           {allFormData?.map((data) => {
-            let { exam_type, exam_session, fee_paid_amount, fee_reciept_ref_no, acknowledgement_status } = data;
+            let { id, exam_type, exam_session, fee_paid_amount, fee_reciept_ref_no, acknowledgement_status } = data;
             return (
               <TableRow
                 key={`${fee_reciept_ref_no}`}
@@ -191,7 +216,51 @@ export default function Exams() {
                 <TableCell>{acknowledgement_status}</TableCell>
                 <TableCell>{data?.semester_id?.semester_code}</TableCell>
                 <TableCell>{data?.department_id?.department_name}</TableCell>
-                <TableCell>{data?.department_id?.instructor?.username}</TableCell>
+                <TableCell>
+                  {data?.department_id?.instructor?.username}
+                </TableCell>
+                <TableCell>
+                  {acknowledgement_status === "Approved" ? (
+                    <LoadingButton
+                      variant="text"
+                      loading={cardId === id && admitLoading ? true : false}
+                      size="small"
+                      onClick={() => handleDownload(id)}
+                      // sx={{ mt: 3, mb: 2 }}
+                      disabled={
+                        acknowledgement_status !== "Approved" ? true : false
+                      }
+                    >
+                      {admitDetails.length !== 0 && cardId === id ? (
+                        <PDFDownloadLink
+                          document={<PdfDocument data={admitDetails} />}
+                          fileName="admitCard.pdf"
+                          style={{
+                            textDecoration: "none",
+                            border: "none",
+                          }}
+                        >
+                          {({ blob, url, loading, error }) =>
+                            loading ? "Downloading..." : "Download"
+                          }
+                        </PDFDownloadLink>
+                      ) : "Load Card"}
+                    </LoadingButton>
+                  ) : (
+                    <LoadingButton
+                      variant="text"
+                      loading={cardId === id && admitLoading ? true : false}
+                      size="small"
+                      onClick={() => handleDownload(id)}
+                      // sx={{ mt: 3, mb: 2 }}
+                      disabled={
+                        acknowledgement_status !== "Approved" ? true : false
+                      }
+                    >
+                      Load Card
+                    </LoadingButton>
+                  )}
+                </TableCell>
               </TableRow>
             );
           })}
@@ -376,6 +445,7 @@ export default function Exams() {
                 <TableCell>Semester Code</TableCell>
                 <TableCell>Department Name</TableCell>
                 <TableCell>Instructor</TableCell>
+                <TableCell>Admit Card</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>{tableRowsContent}</TableBody>

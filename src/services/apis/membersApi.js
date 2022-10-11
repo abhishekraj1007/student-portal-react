@@ -213,6 +213,31 @@ const getExamTerms = async (college) => {
   return {};
 };
 
+const getAdmitCard = async (college, id) => {
+  let token = JSON.parse(localStorage.getItem("auth"));
+  // console.log("Member Token", 'Bearer ' + token.access_token);
+  try {
+    const response = await axios.post(
+      `${BASE_API_URL}/college/${college}/api/v1/student/admit-card/${id}/`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token.access_token}`
+        }
+      }
+    );
+
+    return response.data;
+  } catch (e) {
+    console.log("error", e);
+    if (!axios.isCancel(e)) {
+      throw e;
+    }
+  }
+  
+  return {};
+};
+
 
 const logout = async (college) => {
   let token = JSON.parse(localStorage.getItem("auth"));
@@ -248,6 +273,7 @@ const membersApi = {
   getSemesters,
   getExamTerms,
   studentExamResult,
+  getAdmitCard,
 };
 
 export default membersApi;
