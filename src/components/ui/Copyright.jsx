@@ -1,19 +1,24 @@
-import { Typography, Link } from "@mui/material";
+import { Typography, Link, Box } from "@mui/material";
 
 export default function Copyright(props) {
   return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="#">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
+    <Box {...props}>
+      <Typography
+        variant="body2"
+        color="text.secondary"
+        align="center"
+      >
+        {"SDMS Version 1.0"}
+      </Typography>
+      <Typography
+        variant="body2"
+        color="text.secondary"
+        align="center"
+      >
+        {"Copyright © Xappsoft Technologies "}
+        {new Date().getFullYear()}
+        {"."}
+      </Typography>
+    </Box>
   );
 }
