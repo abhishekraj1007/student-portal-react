@@ -1,6 +1,6 @@
 import { LoadingButton } from "@mui/lab";
 import { Box, Card, Divider, Grid, InputLabel, Paper, MenuItem, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, FormControl } from "@mui/material";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import membersApi from "../../services/apis/membersApi";
@@ -28,46 +28,16 @@ export default function Exams() {
   const userData = useSelector((state) => state.account?.studentProfileData);
   const [allFormData, setAllFormData] = useState([]);
 
+  const renderOnce = useRef(true);
+
   useEffect(() => {
     console.log("userDataForm", userData);
     setStudentID(userData?.studentID);
     setName(userData?.user?.username);
     setMobile(userData?.user?.mobile);
     // setSemester(userData?.semester?.semester_code);
-    setDepartment(userData?.department_id?.department_name)
+    setDepartment(userData?.department_id?.department_name ? userData?.department_id?.department_name : "")
   }, [userData])
-
-  const getFormFilledUp = async (formData) => {
-    setLoading(true);
-    try {
-      const data = await membersApi.studentExamForm(college, formData);
-
-      if (data.message) {
-        setLoading(false);
-        console.log(data);
-        toast.success(`${data.message}`);
-        // navigate("/dashboard");
-      }
-
-      if (data.messages) {
-        setLoading(false);
-        console.log(data);
-        toast.error(`${data.messages}`);
-        // navigate("/dashboard");
-      }
-
-      if (data.error) {
-        setLoading(false);
-        console.log(data);
-        toast.error("Not able to create college");
-        // localStorage.setItem("access_token", `${userData.access_token}`);
-      }
-    } catch (error) {
-      setLoading(false);
-      toast.error("Something Went Wrong");
-      console.log(error);
-    }
-  };
 
   const getFormData = async () => {
     setLoading(true);
@@ -85,6 +55,39 @@ export default function Exams() {
       if (response.error) {
         setLoading(false);
         console.log(response);
+        toast.error("Not able to create college");
+        // localStorage.setItem("access_token", `${userData.access_token}`);
+      }
+    } catch (error) {
+      setLoading(false);
+      toast.error("Something Went Wrong");
+      console.log(error);
+    }
+  };
+
+  const getFormFilledUp = async (formData) => {
+    setLoading(true);
+    try {
+      const data = await membersApi.studentExamForm(college, formData);
+
+      if (data.message) {
+        setLoading(false);
+        console.log(data);
+        toast.success(`${data.message}`);
+        // navigate("/dashboard");
+        getFormData();
+      }
+
+      if (data.messages) {
+        setLoading(false);
+        console.log(data);
+        toast.error(`${data.messages}`);
+        // navigate("/dashboard");
+      }
+
+      if (data.error) {
+        setLoading(false);
+        console.log(data);
         toast.error("Not able to create college");
         // localStorage.setItem("access_token", `${userData.access_token}`);
       }
@@ -134,9 +137,12 @@ export default function Exams() {
   };
 
   useEffect(() => {
-    getAllSems();
-    getAllTerms();
-    getFormData();
+    if(renderOnce.current) {
+      renderOnce.current = false;
+      getAllSems();
+      getAllTerms();
+      getFormData();
+    }
   }, [])
 
   const handleSubmit = () => {
@@ -178,7 +184,7 @@ export default function Exams() {
                 key={`${fee_reciept_ref_no}`}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
-                <TableCell>{exam_type}</TableCell>
+                <TableCell>{exam_type.exam_type_name}</TableCell>
                 <TableCell>{exam_session}</TableCell>
                 <TableCell>{fee_paid_amount}</TableCell>
                 <TableCell>{fee_reciept_ref_no}</TableCell>
@@ -277,20 +283,6 @@ export default function Exams() {
               />
             </Grid>
             <Grid item xs={12} sm={4}>
-              {/* <FormControl fullWidth>
-                <InputLabel id="exam-type-label">Exam Type</InputLabel>
-                <Select
-                  id="examType"
-                  value={examType}
-                  label="Exam Type"
-                  placeholder="Exam Type"
-                  onChange={(e) => setExamType(e.target.value)}
-                  fullWidth
-                >
-                  <MenuItem value={"MID_TERM"}>MID_TERM</MenuItem>
-                  <MenuItem value={"FINAL_TERM"}>FINAL_TERM</MenuItem>
-                </Select>
-              </FormControl> */}
               <FormControl fullWidth>
                 <InputLabel id="exam-type-label">Exam Type</InputLabel>
                 <Select
@@ -301,8 +293,8 @@ export default function Exams() {
                   fullWidth
                 >
                   {allExamTerms?.map((data, index) => (
-                    <MenuItem value={data.exam_type} key={`${data.exam_type}_${index}`}>
-                      {data.exam_type}
+                    <MenuItem value={data.exam_type_name} key={`${data.exam_type_name}_${index}`}>
+                      {data.exam_type_name}
                     </MenuItem>
                   ))}
                 </Select>
