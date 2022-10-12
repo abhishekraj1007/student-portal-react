@@ -4,7 +4,7 @@ WORKDIR /app
 
 ADD package*.json ./
 
-RUN npm install --force
+RUN npm install
 
 
 ADD . .
