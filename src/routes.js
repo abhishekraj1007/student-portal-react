@@ -16,15 +16,17 @@ const StudentExamForm = Loadable(lazy(() => import("./pages/Exams/Exams")));
 const ViewCollegeMembers = Loadable(lazy(() => import("./pages/ViewColleges/components/CollegeSchema/CollegeSchema")));
 const StudentExamResult = Loadable(lazy(() => import("./pages/ExamResult/ExamResult")));
 
+const NotFound = Loadable(lazy(() => import("./pages/error/NotFound")));
+
 
 const routes = [
   {
-    path: "/login",
+    path: "/admin/login",
     element: <SignIn />,
   },
 
   {
-    path: "/",
+    path: "/admin",
     element: <MainLayout />,
     children: [
       {
@@ -32,19 +34,19 @@ const routes = [
         element: <Dashboard />,
       },
       {
-        path: "/create-college",
+        path: "create-college",
         element: <CreateCollege />,
       },
       {
-        path: "/colleges",
+        path: "colleges",
         element: <ViewColleges />,
       },
       {
-        path: "/colleges/:schema_name",
+        path: "colleges/:schema_name",
         element: <ViewCollegeMembers />,
       },
       {
-        path: "/register-member",
+        path: "register-member",
         element: <RegisterMember />,
       },
     ],
@@ -87,83 +89,36 @@ const routes = [
     ],
   },
 
-  // {
-  //   path: '/account',
-  //   element: (
-  //     <MainLayout />
-  //   ),
-  //   children: [
-  //     {
-  //       path: '',
-  //       element: <StudentAccount />,
-  //     },
-  //   ],
-  // },
-
-  // {
-  //   path: '/dashboard',
-  //   element: (
-  //     <MainLayout />
-  //   ),
-  //   children: [
-  //     {
-  //       path: '',
-  //       element: <Dashboard />,
-  //     },
-  //   ],
-  // },
-
-  // {
-  //   path: '/create-college',
-  //   element: (
-  //     <MainLayout />
-  //   ),
-  //   children: [
-  //     {
-  //       path: '',
-  //       element: <CreateCollege />,
-  //     },
-  //   ],
-  // },
-
-  // {
-  //   path: '/colleges',
-  //   element: (
-  //     <MainLayout />
-  //   ),
-  //   children: [
-  //     {
-  //       path: '',
-  //       element: <ViewColleges />,
-  //     },
-  //   ],
-  // },
-
-  // {
-  //   path: '/register-member',
-  //   element: (
-  //     <MainLayout />
-  //   ),
-  //   children: [
-  //     {
-  //       path: '',
-  //       element: <RegisterMember />,
-  //     },
-  //   ],
-  // },
-
-  // {
-  //   path: '/courses',
-  //   element: (
-  //     <MainLayout />
-  //   ),
-  //   children: [
-  //     {
-  //       path: '',
-  //       element: <Courses />,
-  //     },
-  //   ],
-  // },
+  {
+    path: '*',
+    children: [
+      // {
+      //   path: '',
+      //   exact: true,
+      //   element: <Navigate to="/dashboard/um" />,
+      // },
+      // {
+      //   path: 'login',
+      //   element: <Login />,
+      // },
+      // {
+      //   path: '401',
+      //   element: <AuthorizationError />,
+      // },
+      // {
+      //   path: '500',
+      //   element: <ServerError />,
+      // },
+      {
+        path: '404',
+        element: <NotFound />,
+      },
+      {
+        path: '*',
+        element: <NotFound />,
+      },
+    ],
+  },
 ];
 
 export default routes;

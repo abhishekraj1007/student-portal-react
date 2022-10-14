@@ -49,7 +49,7 @@ export default function SignIn() {
       if(location.pathname === `/${college}/student/login`) {
         userData = await membersApi.signIN(signInDeatils, college);
       }
-      if(location.pathname === `/login`) {
+      if(location.pathname === `/admin/login`) {
         userData = await superAdminApi.signIN(signInDeatils);
       }
 
@@ -98,7 +98,7 @@ export default function SignIn() {
         setLoading(false);
         console.log(userData);
         // toast.success("Logged In Successfully");
-        if (userData.is_superadmin) navigate(`/`);
+        if (userData.is_superadmin) navigate(`/admin`);
       }
 
       // if(userData.user_type) {`
@@ -216,7 +216,8 @@ export default function SignIn() {
             </Avatar>
           )}
           <Typography component="h1" variant="h5">
-            Sign in
+            {location.pathname === `/${college}/student/login` && "Student"}
+            {location.pathname === `/admin/login` && "Super Admin"}
           </Typography>
           <Box
             component="form"

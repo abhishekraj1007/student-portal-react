@@ -26,7 +26,7 @@ export const SuperAdminItems = () => {
         console.log(data);
         dispatch(authActions.logout());
         localStorage.removeItem('auth')
-        navigate("/login")
+        navigate("/admin/login")
         toast.success(`${data.msg}`);
       }
     } catch (error) {
@@ -40,7 +40,7 @@ export const SuperAdminItems = () => {
       {/* <ListSubheader component="div" inset>
           User
         </ListSubheader> */}
-      <ListItemButton onClick={() => navigate("/create-college")}>
+      <ListItemButton onClick={() => navigate("create-college")}>
         <Tooltip title="Create" placement="right">
           <ListItemIcon>
             <AddIcon />
@@ -48,7 +48,7 @@ export const SuperAdminItems = () => {
         </Tooltip>
         <ListItemText primary="Create College" />
       </ListItemButton>
-      <ListItemButton onClick={() => navigate("/colleges")}>
+      <ListItemButton onClick={() => navigate("colleges")}>
         <Tooltip title="Colleges" placement="right">
           <ListItemIcon>
             <SchoolIcon />

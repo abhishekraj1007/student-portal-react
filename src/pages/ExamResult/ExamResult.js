@@ -1,5 +1,5 @@
 import { Accordion, AccordionDetails, AccordionSummary, Box, Card, Divider, Grid, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 // import SkeletonTypography from "../../components/ui/SkeletonTypography";
 import membersApi from "../../services/apis/membersApi";
@@ -12,8 +12,26 @@ export default function ExamResult() {
     const { college } = useParams();
     const [loading, setLoading] = useState(false);
     const [sems, setSems] = useState({});
+    const [formettedData, setFormettedData] = useState({})
 
     // const departmentName = useSelector((state) => state.account.studentProfileData?.department_id?.department_name || "");
+
+    const getFormettedData = (sems) => {
+      // let obj = {
+      //   [`${sem}`]: {
+      //     [`${course_name}`]: [],
+      //     exam_terms: []
+      //   }
+
+      // }
+      let obj = {};
+      let semesters = [];
+      Object.keys(sems)?.map((sem) => semesters.push(`${sem}`));
+      for(let i = 0 ; i < semesters.length -1 ; i++) {
+        
+      }
+      console.log(semesters);
+    }
 
     const getCourses = async () => {
       setLoading(true);
@@ -24,6 +42,8 @@ export default function ExamResult() {
           setLoading(false);
           console.log(response.data);
           setSems(response.data);
+          let sems = response.data;
+          getFormettedData(sems);
         }
       } catch (error) {
         setLoading(false);
@@ -36,13 +56,6 @@ export default function ExamResult() {
       console.log("Exam Result render");
       getCourses();
     }, []);
-
-    // const cardLoadingData = [
-    //   { variant_1: "h3", variant_2: "caption", variant_3: "h1" },
-    //   { variant_1: "h3", variant_2: "caption", variant_3: "h1" },
-    //   { variant_1: "h3", variant_2: "caption", variant_3: "h1" },
-    //   { variant_1: "h3", variant_2: "caption", variant_3: "h1" },
-    // ];
 
     return (
       <Box>
@@ -71,7 +84,7 @@ export default function ExamResult() {
                       >
                         <Stack>
                           <Typography variant="h5">{sem}</Typography>
-                          <Box sx={{ py: 1 }}>
+                          {/* <Box sx={{ py: 1 }}>
                             {sems[`${sem}`]?.map((item) => {
                               return (
                                 <>
@@ -106,7 +119,7 @@ export default function ExamResult() {
                                 </>
                               );
                             })}
-                          </Box>
+                          </Box> */}
                         </Stack>
                       </AccordionSummary>
                       <Divider />
@@ -114,37 +127,194 @@ export default function ExamResult() {
                         <Card>
                           <TableContainer component={Paper}>
                             <Table sx={{ minWidth: 650 }}>
-                              <TableHead>
+                              <TableHead
+                                sx={{
+                                  fontWeight: "600",
+                                  textTransform: "uppercase",
+                                  textAlign: "center",
+                                }}
+                              >
                                 <TableRow>
-                                  <TableCell>Course Name</TableCell>
-                                  <TableCell>Term</TableCell>
-                                  <TableCell>Secured Marks</TableCell>
-                                  <TableCell>Total Marks</TableCell>
+                                  <TableCell>Subject</TableCell>
+                                  <TableCell sx={{ textAlign: "center" }}>
+                                    Mid Term
+                                  </TableCell>
+                                  <TableCell sx={{ textAlign: "center" }}>
+                                    Final Term
+                                  </TableCell>
+                                  <TableCell sx={{ textAlign: "center" }}>
+                                    Total
+                                  </TableCell>
+                                  <TableCell />
+                                </TableRow>
+                                <TableRow spacing={2}>
+                                  <TableCell />
+                                  <TableCell>
+                                    <Box
+                                      sx={{
+                                        display: "flex",
+                                        justifyContent: "space-around",
+                                      }}
+                                    >
+                                      <Box component="span">{"FM"}</Box>
+                                      <Box component="span">{"SM"}</Box>
+                                    </Box>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Box
+                                      sx={{
+                                        display: "flex",
+                                        justifyContent: "space-around",
+                                      }}
+                                    >
+                                      <Box component="span">{"FM"}</Box>
+                                      <Box component="span">{"SM"}</Box>
+                                    </Box>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Box
+                                      sx={{
+                                        display: "flex",
+                                        justifyContent: "space-around",
+                                      }}
+                                    >
+                                      <Box component="span">{"FM"}</Box>
+                                      <Box component="span">{"SM"}</Box>
+                                    </Box>
+                                  </TableCell>
+                                  <TableCell sx={{ textAlign: "center" }}>
+                                    Credit
+                                  </TableCell>
                                 </TableRow>
                               </TableHead>
                               <TableBody>
                                 {sems &&
-                                  sems[`${sem}`]?.map((course, index) => (
-                                    <TableRow
-                                      key={`${course.course_name}_${index}`}
-                                      sx={{
-                                        "&:last-child td, &:last-child th": {
-                                          border: 0,
-                                        },
-                                      }}
+                                  sems[`${sem}`]?.map((item, index) => (
+                                    <Fragment
+                                      key={`${item.course_name}_${index}`}
                                     >
-                                      <TableCell>
-                                        {course.course_name}
-                                      </TableCell>
-                                      <TableCell>{course.exam_type}</TableCell>
-                                      <TableCell>
-                                        {course.secured_marks}
-                                      </TableCell>
-                                      <TableCell>
-                                        {course.total_marks}
-                                      </TableCell>
-                                    </TableRow>
+                                      {item.course_name && (
+                                        <TableRow
+                                          sx={{
+                                            "&:last-child td, &:last-child th":
+                                              {
+                                                border: 0,
+                                              },
+                                          }}
+                                        >
+                                          <TableCell>
+                                            {item.course_name}
+                                          </TableCell>
+                                          {item.exam?.map((data, jndex) => (
+                                            <TableCell
+                                              key={`${data.exam_type}_${jndex}`}
+                                            >
+                                              <Box
+                                                sx={{
+                                                  display: "flex",
+                                                  justifyContent:
+                                                    "space-around",
+                                                }}
+                                              >
+                                                <Box component="span">
+                                                  {data.total_marks}
+                                                </Box>
+                                                <Box component="span">
+                                                  {data.secured_marks}
+                                                </Box>
+                                              </Box>
+                                            </TableCell>
+                                          ))}
+                                          <TableCell sx={{ textAlign: "center" }}>
+                                            {item.credit}
+                                          </TableCell>
+                                        </TableRow>
+                                      )}
+                                    </Fragment>
                                   ))}
+                                <TableRow>
+                                  <TableCell>Total</TableCell>
+                                  <TableCell>
+                                    {sems[`${sem}`].map((data, i) => (
+                                        data?.mid_term_total && (
+                                          <Box
+                                            sx={{
+                                              display: "flex",
+                                              justifyContent: "space-around",
+                                            }}
+                                          >
+                                            <Box component="span">
+                                              {
+                                                data?.mid_term_total
+                                                  ?.total_marks
+                                              }
+                                            </Box>
+                                            <Box component="span">
+                                              {
+                                                data?.mid_term_total
+                                                  ?.secured_marks
+                                              }
+                                            </Box>
+                                          </Box>
+                                        )
+                                      ))}
+                                  </TableCell>
+                                  <TableCell>
+                                    {sems[`${sem}`].map((data, i) => (
+                                        data?.final_term_total && (
+                                          <Box
+                                            sx={{
+                                              display: "flex",
+                                              justifyContent: "space-around",
+                                            }}
+                                          >
+                                            <Box component="span">
+                                              {
+                                                data?.final_term_total
+                                                  ?.total_marks
+                                              }
+                                            </Box>
+                                            <Box component="span">
+                                              {
+                                                data?.final_term_total
+                                                  ?.secured_marks
+                                              }
+                                            </Box>
+                                          </Box>
+                                        )
+                                      ))}
+                                  </TableCell>
+                                  <TableCell>
+                                    {sems[`${sem}`].map((data, i) => (
+                                        data?.grand_total && (
+                                          <Box
+                                            sx={{
+                                              display: "flex",
+                                              justifyContent: "space-around",
+                                            }}
+                                          >
+                                            <Box component="span">
+                                              {
+                                                data?.grand_total
+                                                  ?.total_marks
+                                              }
+                                            </Box>
+                                            <Box component="span">
+                                              {
+                                                data?.grand_total
+                                                  ?.secured_marks
+                                              }
+                                            </Box>
+                                          </Box>
+                                        )
+                                      ))}
+                                  </TableCell>
+                                  <TableCell sx={{ textAlign: "center" }}>
+                                    {sems[`${sem}`].map((data, i) => (
+                                        data?.grand_total && (`${data.grand_total?.total_credit}`)
+                                      ))}
+                                  </TableCell>
+                                </TableRow>
                               </TableBody>
                             </Table>
                           </TableContainer>
