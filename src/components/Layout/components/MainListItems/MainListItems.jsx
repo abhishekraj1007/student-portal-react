@@ -22,7 +22,7 @@ export const MainListItems = () => {
       <ListItemButton
         onClick={() => {
           if (college) navigate(`/${college}/student`);
-          if (!college) navigate("/");
+          if (!college) navigate("/admin");
         }}
       >
         <Tooltip title="Dashboard" placement="right">
