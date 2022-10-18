@@ -1,5 +1,5 @@
 import { Accordion, AccordionDetails, AccordionSummary, Box, Card, Divider, Grid, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 // import SkeletonTypography from "../../components/ui/SkeletonTypography";
 import membersApi from "../../services/apis/membersApi";
@@ -13,6 +13,8 @@ export default function ExamResult() {
     const [loading, setLoading] = useState(false);
     const [sems, setSems] = useState({});
 
+    const renderOnce = useRef(true);
+
     // const departmentName = useSelector((state) => state.account.studentProfileData?.department_id?.department_name || "");
 
     const getCourses = async () => {
@@ -20,10 +22,15 @@ export default function ExamResult() {
       try {
         const response = await membersApi.studentExamResult(college);
 
-        if (response) {
+        if (response.data) {
           setLoading(false);
           console.log(response.data);
           setSems(response.data);
+        }
+        if (response.msg) {
+          setLoading(false);
+          console.log(response.msg);
+          toast.error(`${response.msg}`);
         }
       } catch (error) {
         setLoading(false);
@@ -33,8 +40,10 @@ export default function ExamResult() {
     };
 
     useEffect(() => {
-      console.log("Exam Result render");
-      getCourses();
+      if(renderOnce.current) {
+        renderOnce.current = false;
+        getCourses();
+      }
     }, []);
 
     return (
@@ -161,17 +170,17 @@ export default function ExamResult() {
                                                 }}
                                               >
                                                 <Box component="span">
-                                                  {data.total_marks}
+                                                  {data.total_marks ? data.total_marks : "-"}
                                                 </Box>
                                                 <Box component="span">
-                                                  {data.secured_marks}
+                                                  {data.secured_marks ? data.secured_marks : "-"}
                                                 </Box>
                                               </Box>
                                             </TableCell>
                                           ))}
                                           <TableCell sx={{ textAlign: "center" }}>
                                             {item.exam?.map((data) => 
-                                              data?.credit && `${data.credit}`
+                                              data?.credit && `${data.credit ? data.credit : "-"}`
                                             )}
                                           </TableCell>
                                         </TableRow>
@@ -191,14 +200,12 @@ export default function ExamResult() {
                                           >
                                             <Box component="span">
                                               {
-                                                data?.mid_term_total
-                                                  ?.total_marks
+                                                data.mid_term_total.total_marks ? data.mid_term_total.total_marks : "-"
                                               }
                                             </Box>
                                             <Box component="span">
                                               {
-                                                data?.mid_term_total
-                                                  ?.secured_marks
+                                                data.mid_term_total.secured_marks ? data.mid_term_total.secured_marks : "-"
                                               }
                                             </Box>
                                           </Box>
@@ -216,14 +223,12 @@ export default function ExamResult() {
                                           >
                                             <Box component="span">
                                               {
-                                                data?.final_term_total
-                                                  ?.total_marks
+                                                data.final_term_total.total_marks ? data.final_term_total.total_marks : "-"
                                               }
                                             </Box>
                                             <Box component="span">
                                               {
-                                                data?.final_term_total
-                                                  ?.secured_marks
+                                                data.final_term_total.secured_marks ? data.final_term_total.secured_marks : "-"
                                               }
                                             </Box>
                                           </Box>
@@ -241,14 +246,12 @@ export default function ExamResult() {
                                           >
                                             <Box component="span">
                                               {
-                                                data?.grand_total
-                                                  ?.total_marks
+                                                data.grand_total.total_marks ? data.grand_total.total_marks : "-"
                                               }
                                             </Box>
                                             <Box component="span">
                                               {
-                                                data?.grand_total
-                                                  ?.secured_marks
+                                                data.grand_total.secured_marks ? data.grand_total.secured_marks : "-"
                                               }
                                             </Box>
                                           </Box>
@@ -257,7 +260,7 @@ export default function ExamResult() {
                                   </TableCell>
                                   <TableCell sx={{ textAlign: "center" }}>
                                     {sems[`${sem}`].map((data, i) => (
-                                        data?.grand_total && (`${data.grand_total?.total_credit}`)
+                                        data?.grand_total && (`${data.grand_total.total_credit ? data.grand_total.total_credit : "-"}`)
                                       ))}
                                   </TableCell>
                                 </TableRow>
