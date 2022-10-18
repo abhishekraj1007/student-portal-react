@@ -12,26 +12,8 @@ export default function ExamResult() {
     const { college } = useParams();
     const [loading, setLoading] = useState(false);
     const [sems, setSems] = useState({});
-    const [formettedData, setFormettedData] = useState({})
 
     // const departmentName = useSelector((state) => state.account.studentProfileData?.department_id?.department_name || "");
-
-    const getFormettedData = (sems) => {
-      // let obj = {
-      //   [`${sem}`]: {
-      //     [`${course_name}`]: [],
-      //     exam_terms: []
-      //   }
-
-      // }
-      let obj = {};
-      let semesters = [];
-      Object.keys(sems)?.map((sem) => semesters.push(`${sem}`));
-      for(let i = 0 ; i < semesters.length -1 ; i++) {
-        
-      }
-      console.log(semesters);
-    }
 
     const getCourses = async () => {
       setLoading(true);
@@ -42,8 +24,6 @@ export default function ExamResult() {
           setLoading(false);
           console.log(response.data);
           setSems(response.data);
-          let sems = response.data;
-          getFormettedData(sems);
         }
       } catch (error) {
         setLoading(false);
@@ -84,42 +64,6 @@ export default function ExamResult() {
                       >
                         <Stack>
                           <Typography variant="h5">{sem}</Typography>
-                          {/* <Box sx={{ py: 1 }}>
-                            {sems[`${sem}`]?.map((item) => {
-                              return (
-                                <>
-                                  {item?.SM && (
-                                    <Typography
-                                      variant="subtitle2"
-                                      sx={{
-                                        mr: 1,
-                                        fontWeight: "600",
-                                        fontSize: "0.9rem",
-                                        color: "rgba(0, 0, 0, 0.68)",
-                                      }}
-                                    >{`Secured Marks: ${item.SM}`}</Typography>
-                                  )}
-                                </>
-                              );
-                            })}
-                            {sems[`${sem}`]?.map((item) => {
-                              return (
-                                <>
-                                  {item?.FM && (
-                                    <Typography
-                                      variant="subtitle2"
-                                      sx={{
-                                        mr: 1,
-                                        fontWeight: "600",
-                                        fontSize: "0.9rem",
-                                        color: "rgba(0, 0, 0, 0.68)",
-                                      }}
-                                    >{`Full Marks: ${item.FM}`}</Typography>
-                                  )}
-                                </>
-                              );
-                            })}
-                          </Box> */}
                         </Stack>
                       </AccordionSummary>
                       <Divider />
@@ -226,7 +170,9 @@ export default function ExamResult() {
                                             </TableCell>
                                           ))}
                                           <TableCell sx={{ textAlign: "center" }}>
-                                            {item.credit}
+                                            {item.exam?.map((data) => 
+                                              data?.credit && `${data.credit}`
+                                            )}
                                           </TableCell>
                                         </TableRow>
                                       )}
