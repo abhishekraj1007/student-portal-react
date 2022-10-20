@@ -77,7 +77,7 @@ export default function Exams() {
     try {
       const data = await membersApi.studentExamForm(college, formData);
 
-      if (data.message) {
+      if (data.status === 200) {
         setLoading(false);
         console.log(data);
         toast.success(`${data.message}`);
@@ -85,10 +85,10 @@ export default function Exams() {
         getFormData();
       }
 
-      if (data.messages) {
+      if (data.status === 400) {
         setLoading(false);
         console.log(data);
-        toast.error(`${data.messages}`);
+        toast.error(`${data.message}`);
         // navigate("/dashboard");
       }
 
