@@ -288,6 +288,46 @@ const logout = async (college) => {
   return {};
 };
 
+const requestPasswordReset = async (college, email) => {
+  // let token = JSON.parse(localStorage.getItem("auth"));
+  try {
+    const response = await axios.post(
+      `${BASE_API_URL}/college/${college}/api/v1/college/request-reset-email/`,
+      {
+        email
+      },
+    );
+
+    return response.data;
+  } catch (e) {
+    console.log("error", e);
+    if (!axios.isCancel(e)) {
+      throw e;
+    }
+  }
+  return {};
+};
+
+const resetPassword = async (college, resetData) => {
+  // let token = JSON.parse(localStorage.getItem("auth"));
+  try {
+    const response = await axios.patch(
+      `${BASE_API_URL}/college/${college}/api/v1/college/password-reset-complete/`,
+      {
+       ...resetData
+      },
+    );
+
+    return response.data;
+  } catch (e) {
+    console.log("error", e);
+    if (!axios.isCancel(e)) {
+      throw e;
+    }
+  }
+  return {};
+};
+
 const membersApi = {
   signIN,
   logout,
@@ -301,6 +341,8 @@ const membersApi = {
   studentExamResult,
   getAdmitCard,
   editStudentProfile,
+  requestPasswordReset,
+  resetPassword
 };
 
 export default membersApi;

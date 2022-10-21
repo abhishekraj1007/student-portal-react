@@ -15,6 +15,7 @@ const StudentCourses = Loadable(lazy(() => import("./pages/Courses/Courses")));
 const StudentExamForm = Loadable(lazy(() => import("./pages/Exams/Exams")));
 const ViewCollegeMembers = Loadable(lazy(() => import("./pages/ViewColleges/components/CollegeSchema/CollegeSchema")));
 const StudentExamResult = Loadable(lazy(() => import("./pages/ExamResult/ExamResult")));
+const ResetPassword = Loadable(lazy(() => import("./pages/ResetPassword/ResetPassword")));
 
 const NotFound = Loadable(lazy(() => import("./pages/error/NotFound")));
 
@@ -60,6 +61,11 @@ const routes = [
   {
     path: "/:college/student/login",
     element: <MemberSignIn />,
+  },
+
+  {
+    path: "/:college/student/forget-password",
+    element: <ResetPassword />,
   },
 
   {
