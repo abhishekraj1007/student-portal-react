@@ -46,6 +46,32 @@ const studentProfile = async (college) => {
   return {};
 };
 
+const editStudentProfile = async (college, formData) => {
+  let token = JSON.parse(localStorage.getItem("auth"));
+  let obj = { ...formData };
+  // console.log("Member Token", 'Bearer ' + token.access_token);
+  try {
+    const response = await axios.post(
+      `${BASE_API_URL}/college/${college}/api/v1/student-profile/`,
+      { ...obj },
+      {
+        headers: {
+          Authorization: `Bearer ${token.access_token}`
+        }
+      }
+    );
+
+    return response.data;
+  } catch (e) {
+    console.log("error", e);
+    if (!axios.isCancel(e)) {
+      throw e;
+    }
+  }
+
+  return {};
+};
+
 const studentCourses = async (college) => {
   let token = JSON.parse(localStorage.getItem("auth"));
   // console.log("Member Token", 'Bearer ' + token.access_token);
@@ -274,6 +300,7 @@ const membersApi = {
   getExamTerms,
   studentExamResult,
   getAdmitCard,
+  editStudentProfile,
 };
 
 export default membersApi;

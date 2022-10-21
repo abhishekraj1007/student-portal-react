@@ -5,7 +5,7 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 
-import { MyProfile } from './components';
+import { MyProfile, EditProfile } from './components';
 import { Card } from '@mui/material';
 
 export default function Account() {
@@ -24,10 +24,12 @@ export default function Account() {
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <TabList onChange={handleChange} aria-label="lab API tabs example">
               <Tab label="My Profile" value="1" />
+              <Tab label="Edit Profile" value="2" />
               {/* <Tab label="Change Password" value="2" /> */}
             </TabList>
           </Box>
           <TabPanel value="1"><MyProfile /></TabPanel>
+          <TabPanel value="2"><EditProfile /></TabPanel>
           {/* <TabPanel value="2">
             <ChangePassword />
           </TabPanel> */}

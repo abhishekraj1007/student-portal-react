@@ -199,7 +199,7 @@ export default function SignIn() {
       <Container component="main" maxWidth="xs">
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 4,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -257,12 +257,12 @@ export default function SignIn() {
                   }
                 : null)}
             />
-            <FormControlLabel
+            {/* <FormControlLabel
               control={
                 <Checkbox value="remember" name="remember" color="primary" />
               }
               label="Remember me"
-            />
+            /> */}
             <LoadingButton
               type="submit"
               fullWidth
