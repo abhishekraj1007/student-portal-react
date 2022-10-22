@@ -192,7 +192,7 @@ export default function SignIn() {
   return (
     <>
       {colName !== "" && (
-        <Box sx={{ textAlign: "center", mt: 3, }}>
+        <Box sx={{ textAlign: "center", mt: 3 }}>
           <Typography variant="h3">{colName}</Typography>
         </Box>
       )}
@@ -272,18 +272,15 @@ export default function SignIn() {
             >
               Sign In
             </LoadingButton>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
+            {location.pathname === `/${college}/student/login` && (
+              <Grid container>
+                <Grid item xs>
+                  <Link href={`/${college}/student/forget-password`} variant="body2">
+                    Forgot password?
+                  </Link>
+                </Grid>
               </Grid>
-              {/* <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid> */}
-            </Grid>
+            )}
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
