@@ -8,7 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import { Box, Card, IconButton, Paper, Typography, Link, Tooltip } from "@mui/material";
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import superAdminApi from "../../services/apis/superAdminApi";
 import TableSkeletonLoading from "../../components/ui/TableSkeletonLoading";
@@ -23,6 +23,7 @@ export default function ViewColleges() {
   const [collegeID, setCollegeID] = useState(null);
   const [loading, setLoading] = useState(false);
   const [colleges, setColleges] = useState([]);
+  const renderOnce = useRef(true);
 
   const getAllColleges = async () => {
     setLoading(true);
@@ -43,7 +44,10 @@ export default function ViewColleges() {
   };
 
   useEffect(() => {
-    getAllColleges();
+    if(renderOnce.current) {
+      renderOnce.current = false;
+      getAllColleges();
+    }
   }, []);
 
   const onDeleteHandler = (id) => {
@@ -53,7 +57,7 @@ export default function ViewColleges() {
   };
 
   const onViewHandler = (schema_name) => {
-    navigate(`/colleges/${schema_name}`);
+    navigate(`/admin/colleges/${schema_name}`);
   };
 
   let tableRowsContent = <TableSkeletonLoading rowPerPage={10} colPerPage={10} />;
@@ -130,7 +134,7 @@ export default function ViewColleges() {
       <Box sx={{ m: 2 }}>
         <Box sx={{ mb: 2 }}>
           <Breadcrumbs>
-            <Link underline="hover" color="inherit" href="/colleges">
+            <Link underline="hover" color="inherit" href="/admin/colleges">
               Colleges
             </Link>
             {/* <Link

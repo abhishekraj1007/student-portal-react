@@ -24,7 +24,7 @@ import membersApi from "../../services/apis/membersApi";
 
 import Copyright from "../../components/ui/Copyright";
 import { accountActions } from "../Account/store/slice/accountSlice";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { BASE_API_URL } from "../../globalVariables";
 
 export default function SignIn() {
@@ -32,6 +32,7 @@ export default function SignIn() {
   const location = useLocation();
   const { college } = useParams();
   const dispatch = useDispatch();
+  const renderOnce = useRef(true);
 
   const [loading, setLoading] = useState(false);
   const [nameError, setNameError] = useState(false);
@@ -156,7 +157,10 @@ export default function SignIn() {
 
   useEffect(() => {
     if(location.pathname === `/${college}/student/login`) {
-      collegeLogo();
+      if(renderOnce.current) {
+        renderOnce.current = false;
+        collegeLogo();
+      }
     }
   }, [location])
 

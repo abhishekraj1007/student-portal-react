@@ -85,6 +85,7 @@ const MainLayout = () => {
   const dispatch = useDispatch();
 //   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const layoutContentRef = useRef(null);
+  const renderOnce = useRef(true);
 
   const [open, setOpen] = useState(true);
   const [loginUserName, setLoginUserName] = useState("");
@@ -98,8 +99,10 @@ const MainLayout = () => {
     setLoginUserName(obj?.userName);
     console.log("profile data", profileData)
     if(!profileData && obj?.isStudent) {
-      console.log("Call the student profile")
-      getStudentProfileData();
+      if(renderOnce.current) {
+        renderOnce.current = false;
+        getStudentProfileData();
+      }
     }
   }, []);
 

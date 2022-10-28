@@ -1,5 +1,5 @@
 import { Accordion, AccordionDetails, AccordionSummary, Box, Card, Divider, Grid, Paper, Stack, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import toast from "react-hot-toast";
 import SkeletonTypography from "../../components/ui/SkeletonTypography";
 import membersApi from "../../services/apis/membersApi";
@@ -11,6 +11,7 @@ export default function Courses() {
     const { college } = useParams();
     const [loading, setLoading] = useState(false);
     const [sems, setSems] = useState({});
+    const renderOnce = useRef(true);
 
     const departmentName = useSelector((state) => state.account.studentProfileData?.department_id?.department_name || "");
 
@@ -32,8 +33,10 @@ export default function Courses() {
     };
 
     useEffect(() => {
-      console.log("course render");
-      getCourses();
+      if(renderOnce.current) {
+        renderOnce.current = false;
+        getCourses();
+      }
     }, []);
 
     const cardLoadingData = [

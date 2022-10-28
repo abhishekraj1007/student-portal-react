@@ -8,7 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import { Box, Card, IconButton, Paper, Typography, Link } from "@mui/material";
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 // import DeleteIcon from "@mui/icons-material/Delete";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import superAdminApi from "../../../../services/apis/superAdminApi";
 import TableSkeletonLoading from "../../../../components/ui/TableSkeletonLoading";
@@ -25,6 +25,7 @@ export default function CollegeSchema() {
 //   const [collegeID, setCollegeID] = useState(null);
   const [loading, setLoading] = useState(false);
   const [college, setCollege] = useState([]);
+  const renderOnce = useRef(true);
 
   const getAllMembers= async () => {
     setLoading(true);
@@ -45,7 +46,10 @@ export default function CollegeSchema() {
   };
 
   useEffect(() => {
-    getAllMembers();
+    if(renderOnce.current) {
+      renderOnce.current = false;
+      getAllMembers();
+    }
   }, []);
 
   let tableRowsContent = <TableSkeletonLoading rowPerPage={10} colPerPage={5} />;
@@ -89,7 +93,7 @@ export default function CollegeSchema() {
       <Box sx={{ m: 2 }}>
         <Box sx={{ mb: 2 }}>
           <Breadcrumbs>
-            <Link underline="hover" color="inherit" href="/colleges">
+            <Link underline="hover" color="inherit" href="/admin/colleges">
               Colleges
             </Link>
             {/* <Link
