@@ -48,6 +48,7 @@ export default function EditProfile() {
         dispatch(accountActions.updateStudentProfileData(data));
         setLoading(false);
         // navigate(`/${college}/student`);
+        toast.success("Profile Updated Successfully");
       }
     } catch (error) {
       toast.error("Something Went Wrong");
