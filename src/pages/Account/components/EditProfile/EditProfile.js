@@ -16,6 +16,7 @@ export default function EditProfile() {
   const [loading, setLoading] = useState(false);
 
   const [studentNumber, setStudentNumber] = useState("");
+  const [studentEmail, setStudentEmail] = useState("");
   const [fatherName, setFatherName] = useState("");
   const [fatherNumber, setFatherNumber] = useState("");
   const [motherName, setMotherName] = useState("");
@@ -27,7 +28,8 @@ export default function EditProfile() {
 
   useEffect(() => {
     console.log("userDataForm", userData);
-    setStudentNumber(userData?.user?.mobile)
+    setStudentNumber(userData?.user?.mobile);
+    setStudentEmail(userData?.user?.email);
     setFatherName(userData?.father_name);
     setFatherNumber(userData?.father_mobile_no);
     setMotherName(userData?.mother_name);
@@ -60,6 +62,7 @@ export default function EditProfile() {
     let formData = {
         id: userData?.id,
         mobile: studentNumber,
+        email: studentEmail,
         father_name: fatherName,
         father_mobile_no: fatherNumber,
         mother_name: motherName,
@@ -85,6 +88,18 @@ export default function EditProfile() {
           </Box>
           <Divider sx={{ mt: 1 }} />
           <Grid container padding={2} spacing={2}>
+            <Grid item xs={12} sm={4}>
+              <TextField
+                required
+                id="studentEmail"
+                label="Student Email"
+                value={studentEmail}
+                name="studentEmail"
+                type="email"
+                onChange={(e) => setStudentEmail(e.target.value)}
+                fullWidth
+              />
+            </Grid>
             <Grid item xs={12} sm={4}>
               <TextField
                 required
